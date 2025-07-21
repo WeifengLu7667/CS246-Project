@@ -1,0 +1,4 @@
+#ifndef GRAPHICALDISPLAY_H
+#define GRAPHICALDISPLAY_H
+
+#endif

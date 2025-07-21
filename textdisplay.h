@@ -11,6 +11,7 @@ class TextDisplay: public Observer {
     Board *board;
 
     public:
+        explicit TextDisplay(Board* b, std::size_t size = 8);
 
         void notify(Subject &whoNotified) override;
         friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
