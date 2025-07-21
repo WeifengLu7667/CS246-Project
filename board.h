@@ -5,6 +5,7 @@
 #include "piece.h"
 #include "state.h"
 #include "colour.h"
+#include "move.h"
 #include <vector>
 #include <memory>
 

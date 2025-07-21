@@ -1,0 +1,25 @@
+#ifndef STATE_H
+#define STATE_H
+
+#include "colour.h";
+#include "castlinginfo.h"
+#include <vector>
+
+enum class GameStatus { IN_PROGRESS, WHITE_IN_CHECK, 
+    BLACK_IN_CHECK, WHITE_WINS, BLACK_WINS, STALEMATE };
+
+struct State {
+    // which turn should the round be
+    Colour turn;
+
+    GameStatus status;
+
+    CastlingInfo castlingRights;
+
+    Posn enPassantTarget;
+
+    std::vector<std::vector<char>> board;
+};
+
+
+#endif
