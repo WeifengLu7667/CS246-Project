@@ -18,7 +18,10 @@ std::vector<Posn> Knight::getValidMoves(const Board& b, Posn p) const {
         int newCol = p.col + dy[i];
 
         if (newRow >= 0 && newRow <=7 && newCol >= 0 && newCol <=7) {
-            validMoves.emplace_back(Posn{newRow, newCol});
+            Piece* dest = getPieceAt(newRow, newCol);
+            if (dest == nullptr && dest->getColour() != this->getColour()) {
+                validMoves.emplace_back(Posn{newRow, newCol});
+            }
         }
     }
     return validMoves;
