@@ -3,6 +3,7 @@
 
 #include "observer.h"
 #include "board.h"
+#include <iostream>
 #include <vector>
 
 class TextDisplay: public Observer {

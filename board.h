@@ -6,12 +6,17 @@
 #include <vector>
 #include <memory>
 
+class Piece;
 
 class Board: public Subject {
-    std::vector<vector<std::unique_ptr<Piece>>> board;
+    using Row = vector<std::unique_ptr<Piece>>;
+    std::vector<Row> board;
+    std::size_t gridSize;
+
     public:
-    Board() {};
-    
+    explicit Board(std::size_t gridSize = 8) {};
+
+
 
 };
 
