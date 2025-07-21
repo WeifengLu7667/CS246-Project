@@ -25,7 +25,7 @@ public:
 
     // Pure virtual
     virtual char getSymbol() const = 0;
-    virtual std::vector<Posn> getValidMoves(const Board& b, int x, int y) const = 0;
+    virtual std::vector<Posn> getValidMoves(const Board& b, Posn p) const = 0;
 };
 
 
