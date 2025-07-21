@@ -3,10 +3,11 @@
 
 #include "player.h"
 #include "board.h"
+#include "move.h"
 
 class HumanPlayer: public Player {
 public:
-    void makeMove(Board &board) override;
+    Move makeMove(Board &board) override;
 };
 
 #endif
