@@ -3,20 +3,28 @@
 
 #include <vector>
 #include "posn.h"
+#include "colour.h"
+
 using namespace std;
 
 class Piece {
 protected:
-    Posn posn;
-    char symbol;
-    int color;
+    Colour colour;
+    bool moved;
 
 public:
-    // ctor
-    Piece(int row, int col, char symbol, int color);
+    // Ctor
+    Piece(Colour c) : colour{c}, moved{false} {}
+    // Dtor
+    virtual ~Piece() = default;
 
+    Colour getColour() const;
+    bool hasMoved() const;
+    void setMoved(bool m);
 
-
+    // Pure virtual
+    virtual char getSymbol() const = 0;
+    virtual std::vector<Posn> getValidMoves(const Board& b, int x, int y) const = 0;
 };
 
 
