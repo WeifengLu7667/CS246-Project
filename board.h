@@ -38,7 +38,7 @@ public:
     bool movePiece(const Move &m);
 
     // return the raw pointer of the Piece at (x, y) without ownership transfer
-    Piece *getPieceAt(int x, int y) const;
+    std::unique_ptr<Piece> getPieceAt(int x, int y) const;
 
     bool isCheck(Colour c) const;
 
