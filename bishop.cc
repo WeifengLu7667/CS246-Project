@@ -24,10 +24,8 @@ std::vector<Posn> Bishop::getValidMoves(const Board& b, Posn p) const {
             } else {
                 if (dest->getColour() != this->getColour()) {
                     validMoves.emplace_back(Posn{newRow, newCol});
-                    break;
-                } else {
-                    break;
                 }
+                break;
             }
             newRow += dx[i];
             newCol += dy[i];
