@@ -15,9 +15,9 @@ class Board: public Subject {
     std::vector<Row> board;
     std::size_t gridSize;
 
-    std::unique_ptr<State> state;
+    State state;
 
-    public:
+public:
     // Big Five
     explicit Board(std::size_t gridSize = 8) {};
 
@@ -37,13 +37,30 @@ class Board: public Subject {
     bool movePiece(const Move &m);
 
     // return the raw pointer of the Piece at (x, y) without ownership transfer
-    Piece* getPieceAt(int x, int y) const;
+    Piece *getPieceAt(int x, int y) const;
 
-    //
+    bool isCheck(Colour c) const;
 
+    bool isCheckMate(Colour c) const;
 
+    bool isStaleMate(Colour c) const;
 
+    void setupDefaultBoard();
 
+    // accessor to private field State
+    State getGameState() const;
+
+    // optional
+    void setupFromFen(const std::string& s);
+
+    // return the possible move
+    std::vector<Move> legalMoves(Colour) const;
+
+    void changeState(State newState);
+
+    void placePiece(char sym, Posn p);
+
+    void removePiece(Posn p);
 
 };
 
