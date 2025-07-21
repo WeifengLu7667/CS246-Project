@@ -2,6 +2,7 @@
 #define PIECE_H
 
 #include <vector>
+#include "board.h"
 #include "posn.h"
 #include "colour.h"
 
