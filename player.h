@@ -3,14 +3,14 @@
 
 #include <string>
 #include "board.h"
-#include "move.h"
+
 
 class Player {
     std::string name;
     
 
 public:
-    virtual void makeMove(Board &board, Move &move) = 0;
+    virtual void makeMove(Board &board) = 0;
     std::string getName() const;
 };  
 
