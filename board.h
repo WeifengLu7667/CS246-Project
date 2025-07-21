@@ -34,7 +34,7 @@ public:
 
     // Public methods
 
-    // returns the movement is valid or not
+    // returns the movement is valid or not. if true, the movement is made. if false, the movement is not made.
     bool movePiece(const Move &m);
 
     // return the raw pointer of the Piece at (x, y) without ownership transfer
