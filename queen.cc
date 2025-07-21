@@ -18,7 +18,7 @@ std::vector<Posn> Queen::getValidMoves(const Board& b, Posn p) const {
         int newCol = p.col + dy[i];
 
         while (newRow >= 0 && newRow <= 7 && newCol >= 0 && newCol <= 7) {
-            Piece* dest = b.getPieceAt(newRow, newCol);
+            Piece* dest = b.getPieceAt(newRow, newCol).get();
             if (dest == nullptr) {
                 validMoves.emplace_back(Posn{newRow, newCol});
             } else {
