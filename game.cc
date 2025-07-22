@@ -20,7 +20,19 @@ Posn Game::convertToPosn(const std::string& posnStr) {// may throw invalid_argum
     return Posn{row, col};
 }
 
-void Game::gameRun() {
+void Game::displayBoard(const std::vector<std::vector<char>>& setupBoard) {
+    cout << "Current board:" << endl;
+    for (int i = 0; i < 8; i++) {
+        cout << 8 - i << " ";
+        for (int j = 0; j < 8; j++) {
+            cout << setupBoard[i][j];
+        }
+        cout << endl;
+    }
+    cout << endl << "  abcdefgh" << endl << endl;
+}
+
+void Game::gameRun() { 
     cout << "Hello World!" << endl;
     cout << "Test" << endl;
     string line;
@@ -36,6 +48,17 @@ void Game::gameRun() {
             CastlingInfo castlingRights{false, false, false, false};
             Posn enPassantTarget{-1, -1};
             vector<vector<char>> setupBoard(8, vector<char>(8));
+            // initialize the empty board
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    if ((i + j) % 2 == 0) {
+                        setupBoard[i][j] = ' ';
+                    } else {
+                        setupBoard[i][j] = '_'; // black space
+                    }
+                }
+            }
+            displayBoard(setupBoard);
             while (getline(cin, line)) {                
                 if (line == "done") { // if requirements are met, we can exit setup mode and start the game
                     // we assume castling and en passant are invalid
@@ -68,38 +91,61 @@ void Game::gameRun() {
                     turn = Colour::Black;
                 } else if (line == "= white") {
                     turn = Colour::White;
-                } else if (line.substr(0, 1) == "-") {
+                } else if (line[0] == '-') {
                     try {
                         Posn pieceToRemove = convertToPosn(line.substr(2, 4));
-                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '-' && setupBoard[pieceToRemove.row][pieceToRemove.col] != ' ') {
+                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '_' && setupBoard[pieceToRemove.row][pieceToRemove.col] != ' ') {
                             if ((pieceToRemove.row + pieceToRemove.col) % 2 == 0) {
                                 setupBoard[pieceToRemove.row][pieceToRemove.col] = ' ';
                             } else {
                                 setupBoard[pieceToRemove.row][pieceToRemove.col] = '_'; // black space
                             }
                             // display the board
-                            cout << "Current board:" << endl;
-                            for (int i = 0; i < 8; i++) {
-                                for (int j = 0; j < 8; j++) {
-                                    cout << setupBoard[i][j];
-                                }
-                                cout << endl;
-                            }
-                            cout << endl;
+                            displayBoard(setupBoard);
                         } else {
                             cout << "the position is already empty" << endl;
                         }
                     } catch (const std::invalid_argument&) {
                         cout << "invalid command in setup mode" << endl;
                     }
-                } else if (line.substr(0, 1) == "+") {
-                    //add code here
+                } else if (line[0] == '+') {
+                    try {
+                        Posn pieceToAdd = convertToPosn(line.substr(4, 6));
+                        char pieceSymbol = line[2];
+                        if (setupBoard[pieceToAdd.row][pieceToAdd.col] == '_' || setupBoard[pieceToAdd.row][pieceToAdd.col] == ' ') {
+                            setupBoard[pieceToAdd.row][pieceToAdd.col] = pieceSymbol;
+                            // display the board
+                            displayBoard(setupBoard);
+                        } else {
+                            cout << "the position is already occupied" << endl;
+                        }
+                    } catch (const std::invalid_argument&) {
+                        cout << "invalid command in setup mode" << endl;
+                    }
                 } else {
                     cout << "invalid command in setup mode" << endl;
                 }
             }
-            // add code here: the setup mode is done, we can start the game
-        }
+            //the setup mode is done, we can start the game
+        } else if (line.substr(0, 4) == "move") {
+            try {
+                Posn from = convertToPosn(line.substr(5, 7));
+                Posn to = convertToPosn(line.substr(9, 11));
+                board.movePiece(from, to);
+            } catch (const std::invalid_argument&) {
+                cout << "invalid move command" << endl;
+            }
+        } else if (line.substr(0, 4) == "undo") {
+            // add code here
+        } else if (line.substr(0, 4) == "game") {
+            // add code here
+        } else if (line.substr(0, 4) == "help") {
+            cout << "this feature is not currently supported" << endl;
+            // add code for bonus feature
+        } else {
+            cout << "invalid command" << endl;
+        } 
+
 
 
     }

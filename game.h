@@ -12,6 +12,7 @@ class Game {
     unique_ptr<Player> blackPlayer;
     std::stack<State> History;
     Posn convertToPosn(const std::string& posnStr);
+    void displayBoard(const std::vector<std::vector<char>>& setupBoard);
 
 public:
     void gameRun();

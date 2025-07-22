@@ -6,7 +6,7 @@
 struct Move {
     Posn from;
     Posn to;
-    char promo;
+    char promo; // ' ' represents no promotion
 };
 
 #endif
