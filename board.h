@@ -43,9 +43,9 @@ public:
 
     bool isCheck(Colour c) const; // check using the actual board (check the positions of the pieces), not simply check the state. Also, change the state.status if the state doesn't match the result.
 
-    bool isCheckMate(Colour c) const;
+    bool isCheckMate(Colour c) const; // same requirementsas isCheck
 
-    bool isStaleMate(Colour c) const;
+    bool isStaleMate(Colour c) const; // same requirements as isCheck
 
     void setupDefaultBoard();
 
