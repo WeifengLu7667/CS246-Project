@@ -9,7 +9,7 @@ char Pawn::getSymbol() const {
 
 std::vector<Posn> Pawn::getValidMoves(const Board& b, Posn p) const {
     std::vector<Posn> validMoves;
-    
+
 
 
 }
