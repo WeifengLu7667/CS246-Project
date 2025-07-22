@@ -9,6 +9,18 @@
 Board::Board(std::size_t gridSize): 
 	board(gridSize, Row(gridSize)), gridSize{gridSize} {};
 
+void Board::snapshotBoard() {
+	std::size_t n = gridSize;
+    for (std::size_t r = 0; r < n; ++r) {
+        for (std::size_t c = 0; c < n; ++c) {
+            const auto &piece = board[r][c];
+            if (piece) state.board[r][c] = piece->getSymbol();
+            else state.board[r][c] = ((r + c) & 1) ? '_' : ' ';
+        }
+    }
+}
+
+
 bool Board::movePiece(const Move &m) {
 	Posn start = m.from;
 	Posn end = m.to;
@@ -22,8 +34,9 @@ bool Board::movePiece(const Move &m) {
 	if (std::find(moves.begin(), moves.end(), des) == moves.end()) return false;
 
 	des = std::move(src);
+	snapshotBoard();
 	notifyObservers();
-	
+
 	return true;
 }
 

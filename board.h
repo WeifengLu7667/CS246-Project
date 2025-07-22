@@ -12,11 +12,15 @@
 class Piece;
 
 class Board: public Subject {
+    // Private Fields
     using Row = vector<std::unique_ptr<Piece>>;
     std::vector<Row> board;
     std::size_t gridSize;
 
     State state;
+    // Private Methods
+    // Mutate State to a new board text display
+    void snapshotBoard();
 
 public:
     // Big Five

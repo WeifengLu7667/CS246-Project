@@ -23,10 +23,8 @@ void TextDisplay::notify() {
                 bool black_space = ((r + c) % 2 == 0);
                 theTextDisplay[r][c] = black_space ? ' ' : '_';
             }
-
         }
     }
-    
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
