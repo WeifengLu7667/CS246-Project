@@ -43,5 +43,14 @@ std::vector<Posn> Pawn::getValidMoves(const Board& b, Posn p) const {
         validMoves.emplace_back(Posn{enemyRow, enemyColRight});
     }
 
+    // En Passent
+    Posn epTarget1 = {enemyRow, enemyColLeft};
+    Posn epTarget2 = {enemyRow, enemyColRight};
+    State currState = b.getGameState();
+    Posn epTarget = currState.enPassantTarget;
+    if (epTarget == epTarget1 || epTarget == epTarget2) {
+        validMoves.emplace_back(epTarget);
+    }
+
     return validMoves;
 }
