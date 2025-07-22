@@ -20,8 +20,8 @@ void TextDisplay::notify() {
             if (p) {
                 theTextDisplay[r][c] = p->getSymbol();
             } else {
-                bool black_space = ((r + c) % 2 == 0);
-                theTextDisplay[r][c] = black_space ? ' ' : '_';
+                bool white_space = ((r + c) % 2 == 0);
+                theTextDisplay[r][c] = white_space ? ' ' : '_';
             }
         }
     }

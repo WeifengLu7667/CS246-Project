@@ -7,11 +7,10 @@
 
 class Player {
     std::string name;
-    
 
 public:
-    virtual Move makeMove(Board &board) = 0;
     std::string getName() const;
+    virtual Move makeMove(Board &board) = 0;
 };  
 
 #endif
