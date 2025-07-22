@@ -6,6 +6,20 @@
 #include "board.h"
 using namespace std;
 
+Posn Game::convertToPosn(const std::string& posnStr) {// may throw invalid_argument if the position string is invalid
+    if (posnStr.length() != 2) {
+        throw std::invalid_argument("Invalid position string");
+    }
+    // convert the position string to a Posn object
+    // a1 = row 7, col 0; h8 = row 0, col 7
+    int col = posnStr[0] - 'a';  // a=0, b=1, ..., h=7
+    int row = '8' - posnStr[1];  // 1=7, 2=6, ..., 8=0
+    if (col < 0 || col > 7 || row < 0 || row > 7) {
+        throw std::invalid_argument("Invalid position string");
+    }    
+    return Posn{row, col};
+}
+
 void Game::gameRun() {
     cout << "Hello World!" << endl;
     cout << "Test" << endl;
@@ -57,8 +71,21 @@ void Game::gameRun() {
                 } else if (line.substr(0, 1) == "-") {
                     try {
                         Posn pieceToRemove = convertToPosn(line.substr(2, 4));
-                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '-') {
-                            setupBoard[pieceToRemove.row][pieceToRemove.col] = '-';
+                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '-' && setupBoard[pieceToRemove.row][pieceToRemove.col] != ' ') {
+                            if ((pieceToRemove.row + pieceToRemove.col) % 2 == 0) {
+                                setupBoard[pieceToRemove.row][pieceToRemove.col] = ' ';
+                            } else {
+                                setupBoard[pieceToRemove.row][pieceToRemove.col] = '_'; // black space
+                            }
+                            // display the board
+                            cout << "Current board:" << endl;
+                            for (int i = 0; i < 8; i++) {
+                                for (int j = 0; j < 8; j++) {
+                                    cout << setupBoard[i][j];
+                                }
+                                cout << endl;
+                            }
+                            cout << endl;
                         } else {
                             cout << "the position is already empty" << endl;
                         }
