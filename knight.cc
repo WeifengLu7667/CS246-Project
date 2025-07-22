@@ -24,5 +24,6 @@ std::vector<Posn> Knight::getValidMoves(const Board& b, Posn p) const {
             }
         }
     }
+
     return validMoves;
 }

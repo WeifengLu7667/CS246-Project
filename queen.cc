@@ -31,5 +31,6 @@ std::vector<Posn> Queen::getValidMoves(const Board& b, Posn p) const {
             newCol += dy[i];
         }
     }
+    
     return validMoves;
 }
