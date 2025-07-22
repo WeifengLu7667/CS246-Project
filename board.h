@@ -20,7 +20,7 @@ class Board: public Subject {
 
 public:
     // Big Five
-    explicit Board(std::size_t gridSize = 8) {};
+    explicit Board(std::size_t gridSize = 8);
 
     Board(const Board&other);
 
@@ -38,7 +38,7 @@ public:
     bool movePiece(const Move &m);
 
     // return the raw pointer of the Piece at (x, y) without ownership transfer
-    Piece* getPieceAt(int x, int y) const;
+    Piece* getPieceAt(std::size_t x, std::size_t y) const;
 
     bool isCheck(Colour c) const;
 
