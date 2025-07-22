@@ -41,7 +41,7 @@ public:
     // return the raw pointer of the Piece at (x, y) without ownership transfer
     Piece* getPieceAt(std::size_t x, std::size_t y) const;
 
-    bool isCheck(Colour c) const;
+    bool isCheck(Colour c) const; // check using the actual board (check the positions of the pieces), not simply check the state. Also, change the state.status if the state doesn't match the result.
 
     bool isCheckMate(Colour c) const;
 

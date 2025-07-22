@@ -3,6 +3,7 @@
 #include <string>
 #include "colour.h"
 #include <vector>
+#include "board.h"
 using namespace std;
 
 void Game::gameRun() {
@@ -23,7 +24,10 @@ void Game::gameRun() {
                 if (line == "done") {
                     //add code here
                     if (oneWhiteKing && oneBlackKing) {// first check if both kings are present
-                        
+                        Board tempBoard;
+                        State state{turn}
+                        tempBoard.changeState()
+
                     break;
                 } else if (line == "= black") {
                     turn = Colour::Black;
