@@ -15,14 +15,14 @@ void Game::gameRun() {
         if (line == "resign") {
             //add code here
         } else if (line == "setup") {
+            // setup mode
             Colour turn;
             bool oneWhiteKing = false;
             bool oneBlackKing = false;
             CastlingInfo castlingRights{false, false, false, false};
             Posn enPassantTarget{-1, -1};
             vector<vector<char>> setupBoard(8, vector<char>(8));
-            while (getline(cin, line)) {
-                
+            while (getline(cin, line)) {                
                 if (line == "done") { // if requirements are met, we can exit setup mode and start the game
                     // we assume castling and en passant are invalid
 
@@ -44,26 +44,34 @@ void Game::gameRun() {
                             if (valid) {
                                 // all requirements are met, we can exit setup mode and start the game
                                 board.changeState(state);
+                                break;
                             }    
                         }
                     } else {
                         cout << "invalid board, can't exit. King number is not correct" << endl;
                     }
-
-
                 } else if (line == "= black") {
                     turn = Colour::Black;
                 } else if (line == "= white") {
                     turn = Colour::White;
                 } else if (line.substr(0, 1) == "-") {
                     //add code here
+                    try {
+                        Posn pieceToRemove = convertToPosn(line.substr(2, 4));
+                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] == '-' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'P' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'k' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'K' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'q' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'Q' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'r' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'R' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'b' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'B' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'n' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'N') {
+                    } catch (const std::invalid_argument&) {
+                        cout << "invalid command in setup mode" << endl;
+                    }
                 } else if (line.substr(0, 1) == "+") {
                     //add code here
+                } else {
+                    cout << "invalid command in setup mode" << endl;
                 }
-
             }
+            // add code here: the setup mode is done, we can start the game
         }
 
 
     }
+    cout << "error reading input" << endl;
 }

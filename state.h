@@ -18,7 +18,7 @@ struct State {
 
     Posn enPassantTarget; // (-1, -1) means no en passant target
 
-    std::vector<std::vector<char>> board;
+    std::vector<std::vector<char>> board; // to access, use board[row][col]
 };
 
 
