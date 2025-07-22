@@ -10,12 +10,12 @@
 
 class TextDisplay: public Observer {
     std::vector<std::vector<char>> theTextDisplay;
-    shared_ptr<Board> board;
+    Board *b;
 
 public:
-    explicit TextDisplay(shared_ptr<Board> b, std::size_t size = 8);
+    explicit TextDisplay(Board *b, std::size_t size = 8);
 
-    void notify(Subject &whoNotified) override;
+    void notify() override;
 
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
