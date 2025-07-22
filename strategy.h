@@ -5,7 +5,7 @@
 
 class Strategy {
     public:
-        virtual void chooseMove(Board &board) = 0;
+        virtual Move chooseMove(Board &board) = 0;
 };
 
 #endif
