@@ -16,7 +16,7 @@ struct State {
 
     CastlingInfo castlingRights;
 
-    Posn enPassantTarget;
+    Posn enPassantTarget; // (-1, -1) means no en passant target
 
     std::vector<std::vector<char>> board;
 };

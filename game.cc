@@ -22,10 +22,12 @@ void Game::gameRun() {
             while (getline(cin, line)) {
                 
                 if (line == "done") {
+                    CastlingInfo castlingInfo{false, false, false, false};
+                    Posn enPassantTarget;
                     //add code here
                     if (oneWhiteKing && oneBlackKing) {// first check if both kings are present
                         Board tempBoard;
-                        State state{turn}
+                        State state{turn, State::Status::IN_PROGRESS, };
                         tempBoard.changeState()
 
                     break;
