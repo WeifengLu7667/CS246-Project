@@ -11,9 +11,9 @@ class Game {
     unique_ptr<Player> whitePlayer;
     unique_ptr<Player> blackPlayer;
     std::stack<State> History;
+    Posn convertToPosn(const std::string& posnStr);
 
 public:
-    Game(unique_ptr<Player> whitePlayer, unique_ptr<Player> blackPlayer);
     void gameRun();
 };
 

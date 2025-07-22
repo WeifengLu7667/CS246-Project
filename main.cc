@@ -1,6 +1,10 @@
 #include <iostream>
+#include "game.h"
+#include <string>
+using namespace std;
 
 int main() {
-    std::cout << "Hello World!" << std::endl;
-    std::cout << "Test" << std::endl;
+    Game chessGame;
+    chessGame.gameRun();
+    return 0;
 }
