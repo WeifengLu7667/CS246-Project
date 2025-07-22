@@ -43,9 +43,10 @@ public:
 
     // check using the actual board (check the positions of the pieces), not simply check the state. 
     // Also, change the state.status if the state doesn't match the result.
+    // Assume the king is on the board
     bool isCheck(Colour c) const;
 
-    bool isCheckMate(Colour c) const; // same requirementsas isCheck
+    bool isCheckMate(Colour c) const; // same requirements as isCheck
 
     bool isStaleMate(Colour c) const; // same requirements as isCheck
 
