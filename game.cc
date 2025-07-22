@@ -55,10 +55,13 @@ void Game::gameRun() {
                 } else if (line == "= white") {
                     turn = Colour::White;
                 } else if (line.substr(0, 1) == "-") {
-                    //add code here
                     try {
                         Posn pieceToRemove = convertToPosn(line.substr(2, 4));
-                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] == '-' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'P' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'k' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'K' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'q' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'Q' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'r' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'R' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'b' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'B' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'n' || setupBoard[pieceToRemove.x][pieceToRemove.y] == 'N') {
+                        if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '-') {
+                            setupBoard[pieceToRemove.row][pieceToRemove.col] = '-';
+                        } else {
+                            cout << "the position is already empty" << endl;
+                        }
                     } catch (const std::invalid_argument&) {
                         cout << "invalid command in setup mode" << endl;
                     }

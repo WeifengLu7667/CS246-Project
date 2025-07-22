@@ -1,7 +1,7 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "colour.h";
+#include "colour.h"
 #include "castlinginfo.h"
 #include <vector>
 
