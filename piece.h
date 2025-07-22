@@ -14,9 +14,7 @@ protected:
     bool moved;
 
 public:
-    // Ctor
     Piece(Colour c) : colour{c}, moved{false} {}
-    // Dtor
     virtual ~Piece() = default;
 
     Colour getColour() const;
