@@ -7,7 +7,6 @@
 
 class Player {
     std::string name;
-    
 
 public:
     std::string getName() const;
