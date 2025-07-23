@@ -2,8 +2,9 @@
 #include "move.h"
 #include "board.h"
 #include <random>
+#include <ctime>
 
-// Helper func
+// Helper
 bool isInVector(const std::vector<Posn>& list, const Posn& p) {
     for (const Posn& q : list) {
         if (q.row == p.row && q.col == p.col) {
@@ -14,27 +15,33 @@ bool isInVector(const std::vector<Posn>& list, const Posn& p) {
 }
 
 Move Level3::chooseMove(Board& board, Colour colour) {
-
-    // Get all valid moves
     std::vector<Move> allMoves = board.legalMoves(colour);
-    int numMoves = allMoves.size();
+    Colour opponent = (colour == Colour::White) ? Colour::Black : Colour::White;
 
+    std::vector<Move> mateMoves;
+    std::vector<Move> checkMoves;
     std::vector<Move> retreatMoves;
     std::vector<Move> captureMoves;
 
-    // Collect all Capture moves
-    for (int i = 0; i < numMoves; i++) {
-        Posn target = allMoves[i].to;
-        Piece* targetPiece = board.getPieceAt(target.row, target.col);
-        if (targetPiece != nullptr && targetPiece->getColour() != colour) {
-            captureMoves.push_back(allMoves[i]);
+    // Identify checkmate & check & capture
+    for (const Move& mv : allMoves) {
+        Board copy = board;
+        copy.movePiece(mv);
+
+        if (copy.isCheckMate(opponent)) {
+            mateMoves.push_back(mv);
+        } else if (copy.isCheck(opponent)) {
+            checkMoves.push_back(mv);
+        } else {
+            Piece* target = board.getPieceAt(mv.to.row, mv.to.col);
+            if (target != nullptr && target->getColour() != colour) {
+                captureMoves.push_back(mv);
+            }
         }
     }
 
-    // Collect all Threatened Grids
-    Colour opponent = (colour == Colour::White) ? Colour::Black : Colour::White;
+    // Identify threatened squares
     std::vector<Move> opponentMoves = board.legalMoves(opponent);
-
     std::vector<Posn> threatenedSquares;
     for (const Move& mv : opponentMoves) {
         if (!isInVector(threatenedSquares, mv.to)) {
@@ -42,7 +49,7 @@ Move Level3::chooseMove(Board& board, Colour colour) {
         }
     }
 
-    // Collect all Retreat moves (from threatened to safe)
+    // Identify retreat moves: from threatened -> safe
     for (const Move& mv : allMoves) {
         if (isInVector(threatenedSquares, mv.from) &&
             !isInVector(threatenedSquares, mv.to)) {
@@ -50,45 +57,26 @@ Move Level3::chooseMove(Board& board, Colour colour) {
         }
     }
 
-    // Check for Retreat + Capture moves
-    for (const Move& mv : retreatMoves) {
-        for (const Move& cap : captureMoves) {
-            if (mv.from.row == cap.from.row && mv.from.col == cap.from.col &&
-                mv.to.row == cap.to.row && mv.to.col == cap.to.col) {
-                return mv;
-            }
-        }
-    }
-
-    // Prefer Retreat
-    if (!retreatMoves.empty()) {
-        static bool seeded = false;
-        if (!seeded) {
-            std::srand(std::time(nullptr));
-            seeded = true;
-        }
-        int index = std::rand() % retreatMoves.size();
-        return retreatMoves[index];
-    }
-
-    // Then Capture
-    if (!captureMoves.empty()) {
-        static bool seeded = false;
-        if (!seeded) {
-            std::srand(std::time(nullptr));
-            seeded = true;
-        }
-        int index = std::rand() % captureMoves.size();
-        return captureMoves[index];
-    }
-
-    // No better strategy, back to random legal move
+    // Random seeding (only once)
     static bool seeded = false;
     if (!seeded) {
         std::srand(std::time(nullptr));
         seeded = true;
     }
-    int index = std::rand() % numMoves;
 
-    return allMoves[index];
+    // Priority order: mate > check > retreat > capture > random
+    if (!mateMoves.empty()) {
+        return mateMoves[std::rand() % mateMoves.size()];
+    }
+    if (!checkMoves.empty()) {
+        return checkMoves[std::rand() % checkMoves.size()];
+    }
+    if (!retreatMoves.empty()) {
+        return retreatMoves[std::rand() % retreatMoves.size()];
+    }
+    if (!captureMoves.empty()) {
+        return captureMoves[std::rand() % captureMoves.size()];
+    }
+
+    return allMoves[std::rand() % allMoves.size()];
 }
