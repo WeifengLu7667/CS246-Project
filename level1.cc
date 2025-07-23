@@ -18,3 +18,8 @@ Move Level1::chooseMove(Board& board, Colour colour) {
 
     return allMoves[index];
 }
+
+/*
+Level 1 strategy support:
+    Random legal moves
+*/
