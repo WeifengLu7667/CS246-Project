@@ -92,8 +92,3 @@ Move Level3::chooseMove(Board& board, Colour colour) {
 
     return allMoves[index];
 }
-
-/*
-Level 3 strategy supports:
-    Prefer Retreat (avoid being captured) > Capture > Random Legal Moves
-*/

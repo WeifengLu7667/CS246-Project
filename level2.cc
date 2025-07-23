@@ -30,10 +30,7 @@ Move Level2::chooseMove(Board& board, Colour colour) {
 }
 
 /*
-Level 2 strategy support:
-    Prefer Capture > Random Legal Moves
-
-Level 2 strategy does NOT support:
+Feature TO BE ADDED:
     Prefer Check > normal Cpature
     Prefer Capture Higher-value pieces > Capture Lower-value pieces
 */

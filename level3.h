@@ -5,7 +5,7 @@
 #include "board.h"
 #include "move.h"
 
-// Prefer avoiding capture, capturing moves, and checks.
+// Prefer Retreat (avoid being captured) > Capture > Random Legal Moves
 class Level3: public Strategy {
     public:
         Move chooseMove(Board &board, Colour colour) override;
