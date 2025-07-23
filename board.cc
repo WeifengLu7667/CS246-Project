@@ -35,6 +35,8 @@ bool Board::movePiece(const Move &m) {
 		start.col < 0 || start.col >= static_cast<int>(gridSize)) return false;
 
 	auto &src = board[start.row][start.col];
+	auto &dst = board[end.row][end.col];
+
 	if (!src) return false;
 	Colour c = src->getColour();
 
@@ -46,29 +48,52 @@ bool Board::movePiece(const Move &m) {
 		if (lm.from == m.from && lm.to == m.to && lm.promo == m.promo) {
             legal = true;
             break;
+		}
 	}
 
 	if (!legal) return false;
 
-	//add code here 
-	
+	// 1. En Passant Capture BEFORE we move the pawn
+	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == state.enPassantTarget) {
+    	int capturedRow = (src->getColour() == Colour::White) ? end.row + 1 : end.row - 1;
+    	Posn capturedPosn = Posn{capturedRow, end.col};
+    	removePiece(capturedPosn);
+    	state.enPassantTarget = Posn{-1, -1};
+	}
 
+	// 2. Move/ Capture
+	dst = std::move(src);
+	src.reset();
 
+	// 3. Promotion
+	bool colour = (dst->getColour() == Colour::White);
+	if (dst && (dst->getSymbol() == colour ? 'P' : 'p') && m.promo != ' ') {
+		switch (m.promo) {
+            case 'Q': case 'q': dst = std::make_unique<Queen>(colour); break;
+            case 'R': case 'r': dst = std::make_unique<Rook>(colour); break;
+            case 'B': case 'b': dst = std::make_unique<Bishop>(colour); break;
+            case 'N': case 'n': dst = std::make_unique<Knight>(colour); break;
+        }
+	}
 
-	// Update enPassantTarget to State
+	// 4. Update enPassantTarget to State
 	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && abs(end.row - start.row) == 2) {
         int middleRow = (start.row + end.row) / 2;
         state.enPassantTarget = Posn{middleRow, start.col};
     } else {
         state.enPassantTarget = Posn{-1, -1};
     }
-
-	// en Passant Capture
-	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == state.enPassantTarget) {
-    	int capturedRow = (src->getColour() == Colour::White) ? end.row + 1 : end.row - 1;
-    	Posn capturedPosn = Posn{capturedRow, end.col};
-    	removePiece(capturedPosn);
-    	state.enPassantTarget = Posn{1, 1};
+	
+	// 5. flip turn and update status
+	state.turn = (colour ? Colour::Black : Colour::White);
+	if (isCheckMate(state.turn)) {
+		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_WINS : GameStatus::BLACK_WINS);
+	} else if (isStaleMate(state.turn)) {
+		state.status = GameStatus::STALEMATE;
+	} else if (isCheck(state.turn)) {
+		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_IN_CHECK: GameStatus::BLACK_IN_CHECK);
+	} else {
+    	state.status = GameStatus::IN_PROGRESS;
 	}
 
 	snapshotBoard();
