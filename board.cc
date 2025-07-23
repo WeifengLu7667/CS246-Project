@@ -34,9 +34,9 @@ bool Board::movePiece(const Move &m) {
 	if (start.row < 0 || start.row >= static_cast<int>(gridSize) ||
 		start.col < 0 || start.col >= static_cast<int>(gridSize)) return false;
 
-	auto &srcPtr = board[start.row][start.col];
-	if (!srcPtr) return false;
-	Colour c = srcPtr->getColour();
+	auto &src = board[start.row][start.col];
+	if (!src) return false;
+	Colour c = src->getColour();
 
 	// 1. Legal Move?
 	std::vector<Move> all = legalMoves(c);
