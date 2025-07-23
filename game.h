@@ -13,6 +13,7 @@ class Game {
     unique_ptr<Player> whitePlayer;
     unique_ptr<Player> blackPlayer;
     std::stack<State> History;
+    bool isRunning; // true if the game is running, false if the game is over
     Posn convertToPosn(const std::string& posnStr);
     void displayBoard(const std::vector<std::vector<char>>& setupBoard);
 

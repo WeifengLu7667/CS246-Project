@@ -40,7 +40,7 @@ void Game::gameRun() {
     while (getline(cin, line)) {
         if (line == "resign") {
             //add code here
-        } else if (line == "setup") {
+        } else if (line == "setup" && !isRunning) {
             // setup mode
             Colour turn;
             bool oneWhiteKing = false;
@@ -127,11 +127,21 @@ void Game::gameRun() {
                 }
             }
             //the setup mode is done, we can start the game
+        } else if (line == "setup" && !isRunning) {
+            cout << "can't enter setup mode, because game is running" << endl;
         } else if (line.substr(0, 4) == "move") {
+            // the code in this else if block needs to be changed
             try {
                 Posn from = convertToPosn(line.substr(5, 7));
-                Posn to = convertToPosn(line.substr(9, 11));
-                board.movePiece(from, to);
+                Posn to = convertToPosn(line.substr(8, 10));
+                if (line.length() == 12) {
+                    char promo = line[11];
+                    Move move{from, to, promo};
+                    board.movePiece(move);
+                } else {
+                    Move move{from, to, ' '};
+                    board.movePiece(move);
+                }
             } catch (const std::invalid_argument&) {
                 cout << "invalid move command" << endl;
             }
