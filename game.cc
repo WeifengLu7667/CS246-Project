@@ -7,6 +7,10 @@
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "player.h"
+#include "strategy.h"
+#include "level1.h"
+#include "level2.h"
+#include "level3.h"
 
 using namespace std;
 
@@ -40,15 +44,29 @@ void Game::gameRun() {
     cout << "Hello World!" << endl; // to be removed
     cout << "Test" << endl; // to be removed
     string line;
+    useDefaultBoard = true;
+    isRunning = false;
+    scoreboard.startGame();
 
     while (getline(cin, line)) {
         if (line == "resign" && isRunning) {
             //add code here
+            State currentState = board.getGameState();
+            if (currentState.turn == Colour::White) {
+                cout << "black player wins" << endl;
+                scoreboard.addBlackScore(1);
+            } else {
+                cout << "white player wins" << endl;
+                scoreboard.addWhiteScore(1);
+            }
+            isRunning = false;
+            useDefaultBoard = true;
+
         } else if (line == "resign" && !isRunning) {
             cout << "can't resign, because game is not running" << endl;
         } else if (line == "setup" && !isRunning) {
             // setup mode
-            Colour turn;
+            Colour turn = Colour::White;
             bool oneWhiteKing = false;
             bool oneBlackKing = false;
             CastlingInfo castlingRights{false, false, false, false};
@@ -69,6 +87,7 @@ void Game::gameRun() {
                 if (line == "done") { // if requirements are met, we can exit setup mode and start the game
                     // we assume castling and en passant are invalid
 
+
                     if (oneWhiteKing && oneBlackKing) {// first check if both kings are present
                         Board tempBoard;
                         State state{turn, GameStatus::IN_PROGRESS, castlingRights, enPassantTarget, setupBoard};
@@ -87,6 +106,7 @@ void Game::gameRun() {
                             if (valid) {
                                 // all requirements are met, we can exit setup mode and start the game
                                 board.changeState(state);
+                                useDefaultBoard = false;
                                 break;
                             }    
                         }
@@ -161,13 +181,66 @@ void Game::gameRun() {
             cout << "can't start a new game, because currentgame is running" << endl;
         } else if (line.substr(0, 4) == "game" && !isRunning) {
             size_t spacePos = line.rfind(' ');
+            string whitePlayerType;
+            string blackPlayerType;
+            bool validPlayers = true;
+
+            // read the player types
             if (spacePos == string::npos) {
                 cout << "invalid game command" << endl;
             } else {
-                string whitePlayerType = line.substr(5, spacePos - 5);
-                string blackPlayerType = line.substr(spacePos + 1);
+                whitePlayerType = line.substr(5, spacePos - 5);
+                blackPlayerType = line.substr(spacePos + 1);
             }
-            // add code here            
+
+            // initialize white player
+            if(whitePlayerType == "human") {
+                whitePlayer = make_unique<HumanPlayer>();
+            } else if (whitePlayerType == "computer[1]") {
+                unique_ptr<Strategy> strategy = make_unique<Level1>();
+                whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (whitePlayerType == "computer[2]") {
+                unique_ptr<Strategy> strategy = make_unique<Level2>();
+                whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (whitePlayerType == "computer[3]") {
+                unique_ptr<Strategy> strategy = make_unique<Level3>();
+                whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (whitePlayerType == "computer[4]") {
+                // add code here for level 4
+                cout << "level 4 is not supported yet" << endl;
+                validPlayers = false;
+            } else {
+                cout << "invalid player type" << endl;
+                validPlayers = false;
+            }
+
+            // initialize black player
+            if (blackPlayerType == "human") {
+                blackPlayer = make_unique<HumanPlayer>();
+            } else if (blackPlayerType == "computer[1]") {
+                unique_ptr<Strategy> strategy = make_unique<Level1>();
+                blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (blackPlayerType == "computer[2]") {
+                unique_ptr<Strategy> strategy = make_unique<Level2>();
+                blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (blackPlayerType == "computer[3]") {
+                unique_ptr<Strategy> strategy = make_unique<Level3>();
+                blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+            } else if (blackPlayerType == "computer[4]") {
+                // add code here for level 4
+                cout << "level 4 is not supported yet" << endl;
+                validPlayers = false;
+            } else {
+                cout << "invalid player type" << endl;
+                validPlayers = false;
+            }
+            if (validPlayers) {
+                // start the game
+                if (useDefaultBoard) {// if the user didn't use setup mode, we set up the default board
+                    board.setupDefaultBoard();
+                }
+                isRunning = true;
+            }
 
         } else if (line.substr(0, 4) == "help") {
             cout << "this feature is not currently supported" << endl;
