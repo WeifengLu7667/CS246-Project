@@ -53,10 +53,10 @@ void Game::gameRun() {
             //add code here
             State currentState = board.getGameState();
             if (currentState.turn == Colour::White) {
-                cout << "black player wins" << endl;
+                cout << "Black wins!" << endl;
                 scoreboard.addBlackScore(1);
             } else {
-                cout << "white player wins" << endl;
+                cout << "White wins!" << endl;
                 scoreboard.addWhiteScore(1);
             }
             isRunning = false;
@@ -156,6 +156,21 @@ void Game::gameRun() {
         } else if (line == "setup" && !isRunning) {
             cout << "can't enter setup mode, because game is running" << endl;
         } else if (line.substr(0, 4) == "move" && isRunning) {
+            State currentState = board.getGameState();
+            Move move;
+            if (currentState.turn == Colour::White) {
+                move = whitePlayer->makeMove(board);
+            } else {
+                move = blackPlayer->makeMove(board);
+            }
+
+            // check if the move is legal
+            if(board.movePiece(move)) {
+                // successful move
+            } else {
+                cout << "illegal move" << endl; // the move is not made because it is illegal
+            }
+
             // the code in this else if block needs to be changed -----------------------------------------------------------
             try {
                 Posn from = convertToPosn(line.substr(5, 7));
