@@ -168,17 +168,56 @@ State Board::getGameState() const {return state;}
 
 
 // return the possible move
-std::vector<Move> Board::legalMoves(Colour) const {
-	
+std::vector<Move> Board::legalMoves(Colour c) const {
+	std::vector<Move> legal;
+	const bool white = (c == Colour::White);
+
+	for (std::size_t row = 0; row < gridSize; ++row) {
+		for (std::size_t col = 0; col < gridSize; ++ col) {
+			const auto &piece = board[row][col];
+			Posn start{static_cast<int>(row), static_cast<int>(col)};
+
+			if (!piece || piece->getColour() != c) continue;
+				
+			auto moves = piece->getValidMoves(*this, start);
+			if (moves.empty()) continue;
+
+			for (const Posn& end : moves) {
+
+				bool isPawn = (piece->getSymbol() == (white ? 'P' : 'p'));
+				bool isPromotion = (isPawn && ((end.row == 0) || (end.col == 7)));
+
+				if (isPromotion) {
+					const char promoPieces[4] = {white ? 'Q':'q', white ? 'R':'r', 
+							white ? 'B':'b', white ? 'N':'n'};
+					for (int i = 0; i < 4; ++i) {
+						Move m{start, end, promoPieces[i]};
+						Board copy(*this);
+
+						if (!copy.movePiece(m)) continue;
+						if (copy.isCheck(c)) continue;
+						
+						legal.push_back(m);
+					}
+				} else {
+					Move m{start, end, ' '};
+
+                    Board copy(*this);
+                    if (!copy.movePiece(m)) continue;
+                    if (copy.isCheck(c)) continue;
+
+                    legal.push_back(m);
+				}
+            }
+		}
+	}
+	return legal;
 }
 
 void Board::changeState(State newState) {
 
 }
 
-void Board::placePiece(char sym, Posn p) {
-
-}
 
 void Board::removePiece(Posn p) {
 

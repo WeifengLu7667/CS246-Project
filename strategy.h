@@ -4,8 +4,9 @@
 #include "board.h"
 
 class Strategy {
+
     public:
-        virtual Move chooseMove(Board &board) = 0;
+    virtual Move chooseMove(Board &board, Colour colour) = 0;
 };
 
 #endif
