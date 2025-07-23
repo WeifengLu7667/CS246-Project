@@ -5,7 +5,7 @@
 #include "board.h"
 #include "move.h"
 
-// Random legal moves.
+// Random legal moves
 class Level1: public Strategy {
     public:
         Move chooseMove(Board &board, Colour colour) override;

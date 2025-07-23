@@ -30,7 +30,7 @@ Move Level2::chooseMove(Board& board, Colour colour) {
 }
 
 /*
-Feature TO BE ADDED:
+Features TO BE ADDED:
     Prefer Check > normal Cpature
     Prefer Capture Higher-value pieces > Capture Lower-value pieces
 */
