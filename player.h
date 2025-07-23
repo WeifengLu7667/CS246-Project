@@ -7,9 +7,11 @@
 
 class Player {
     std::string name;
+    Colour c;
 
 public:
     std::string getName() const;
+    Colour getColour() const;
     virtual Move makeMove(Board &board) = 0;
 };  
 

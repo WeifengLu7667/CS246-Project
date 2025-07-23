@@ -6,8 +6,9 @@
 #include "move.h"
 
 class Level1: public Strategy {
+
     public:
-        Move chooseMove(Board &board) override;
+        Move chooseMove(Board &board, Colour colour) override;
 };
 
 #endif
