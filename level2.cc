@@ -6,4 +6,6 @@
 Move Level2::chooseMove(Board& board, Colour colour) {
     std::vector<Move> allMoves = board.legalMoves(colour);
 
+    int numMoves = allMoves.size();
+
 }

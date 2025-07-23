@@ -5,6 +5,7 @@
 #include "board.h"
 #include "move.h"
 
+// Prefer capturing moves and checks over other moves
 class Level2: public Strategy {
     public:
         Move chooseMove(Board &board, Colour colour) override;
