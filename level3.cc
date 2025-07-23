@@ -23,7 +23,7 @@ Move Level3::chooseMove(Board& board, Colour colour) {
     std::vector<Move> retreatMoves;
     std::vector<Move> captureMoves;
 
-    // Identify checkmate & check & capture
+    // Collect checkmate & check & capture moves
     for (const Move& mv : allMoves) {
         Board copy = board;
         copy.movePiece(mv);
@@ -49,7 +49,7 @@ Move Level3::chooseMove(Board& board, Colour colour) {
         }
     }
 
-    // Identify retreat moves: from threatened -> safe
+    // Collect Retreat moves
     for (const Move& mv : allMoves) {
         if (isInVector(threatenedSquares, mv.from) &&
             !isInVector(threatenedSquares, mv.to)) {
@@ -57,14 +57,14 @@ Move Level3::chooseMove(Board& board, Colour colour) {
         }
     }
 
-    // Random seeding (only once)
+    // Random seeding
     static bool seeded = false;
     if (!seeded) {
         std::srand(std::time(nullptr));
         seeded = true;
     }
 
-    // Priority order: mate > check > retreat > capture > random
+    // Pick move: mate > check > retreat > capture > random
     if (!mateMoves.empty()) {
         return mateMoves[std::rand() % mateMoves.size()];
     }
