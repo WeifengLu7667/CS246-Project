@@ -4,11 +4,12 @@
 #include <random>
 
 Move Level1::chooseMove(Board& board, Colour colour) {
-    std::vector<Move> allMoves = board.legalMoves(colour);
 
+    // Get all valid moves
+    std::vector<Move> allMoves = board.legalMoves(colour);
     int numMoves = allMoves.size();
 
-    // Generate a random number within the range
+    // Randomly pick a move
     static bool seeded = false;
     if (!seeded) {
         std::srand(std::time(nullptr));
@@ -21,5 +22,5 @@ Move Level1::chooseMove(Board& board, Colour colour) {
 
 /*
 Level 1 strategy support:
-    Random legal moves
+    Random Legal Moves
 */

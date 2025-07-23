@@ -4,10 +4,20 @@
 #include <random>
 
 Move Level3::chooseMove(Board& board, Colour colour) {
-    std::vector<Move> allMoves = board.legalMoves(colour);
 
+    // Get all valid moves
+    std::vector<Move> allMoves = board.legalMoves(colour);
     int numMoves = allMoves.size();
-    // 
+
+    // Try Escape (avoid being captured)
+
+
+
+    // Try Capture
+
+
+
+    // Try find both, if not, prefer Esacape, then Capture
 
 
 
@@ -21,3 +31,8 @@ Move Level3::chooseMove(Board& board, Colour colour) {
 
     return allMoves[index];
 }
+
+/*
+Level 3 strategy supports:
+    Prefer Escape (avoid being captured) > Capture > Random Legal Moves
+*/

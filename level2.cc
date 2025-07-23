@@ -4,8 +4,9 @@
 #include <random>
 
 Move Level2::chooseMove(Board& board, Colour colour) {
-    std::vector<Move> allMoves = board.legalMoves(colour);
 
+    // Get all valid moves
+    std::vector<Move> allMoves = board.legalMoves(colour);
     int numMoves = allMoves.size();
 
     // Try capture
@@ -17,7 +18,7 @@ Move Level2::chooseMove(Board& board, Colour colour) {
         }
     }
 
-    // No capture possible, back to random legal move
+    // No capture possible, randomly pick a move
     static bool seeded = false;
     if (!seeded) {
         std::srand(std::time(nullptr));
@@ -30,9 +31,9 @@ Move Level2::chooseMove(Board& board, Colour colour) {
 
 /*
 Level 2 strategy support:
-    Prefer capture over random legal moves
+    Prefer Capture > Random Legal Moves
 
 Level 2 strategy does NOT support:
-    Prefer Check over normal cpature
-    Prefer capture Higher-value pieces over Lower-value pieces
+    Prefer Check > normal Cpature
+    Prefer Capture Higher-value pieces > Capture Lower-value pieces
 */
