@@ -3,6 +3,8 @@
 
 Queen::Queen(Colour c) : Piece{c} {}
 
+std::unique_ptr<Piece> Queen::clone() const { return std::make_unique<Queen>(*this); }
+
 char Queen::getSymbol() const {
     return colour == Colour::White ? 'Q' : 'q';
 }

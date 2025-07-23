@@ -3,6 +3,8 @@
 
 Bishop::Bishop(Colour c) : Piece{c} {}
 
+std::unique_ptr<Piece> Bishop::clone() const { return std::make_unique<Bishop>(*this); }
+
 char Bishop::getSymbol() const {
     return colour == Colour::White ? 'B' : 'b';
 }

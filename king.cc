@@ -3,6 +3,8 @@
 
 King::King(Colour c) : Piece{c} {}
 
+std::unique_ptr<Piece> King::clone() const { return std::make_unique<King>(*this);}
+
 char King::getSymbol() const {
     return colour == Colour::White ? 'K' : 'k';
 }

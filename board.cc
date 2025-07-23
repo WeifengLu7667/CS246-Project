@@ -12,8 +12,36 @@
 #include <vector>
 #include <algorithm>
 
+// Big 5
 Board::Board(std::size_t gridSize): 
 	board(gridSize, Row(gridSize)), gridSize{gridSize} {};
+
+Board::Board(const Board&other):gridSize{other.gridSize}, 
+				board(other.gridSize, Row(other.gridSize)), state{other.state} {
+	for (std::size_t r = 0; r < gridSize; ++r) {
+		for (std::size_t c = 0; c < gridSize; ++c) {
+			if (other.board[r][c]) board[r][c] = other.board[r][c]->clone();
+		}
+	}
+}
+
+
+Board &Board::operator=(const Board&other) {
+	if (this == &other) return *this;
+	gridSize = other.gridSize;
+	state = other.state;
+
+	board.assign(gridSize, Row(gridSize));
+
+	for (std::size_t r = 0; r < gridSize; ++r) {
+		for (std::size_t c = 0; c < gridSize; ++c) {
+			if (other.board[r][c]) board[r][c] = other.board[r][c]->clone();
+			else board[r][c].reset();
+		}
+	}
+	return *this;
+}
+
 
 void Board::snapshotBoard() {
 	std::size_t n = gridSize;

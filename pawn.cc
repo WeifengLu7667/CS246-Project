@@ -3,6 +3,8 @@
 
 Pawn::Pawn(Colour c) : Piece{c} {}
 
+std::unique_ptr<Piece> Pawn::clone() const { return std::make_unique<Pawn>(*this); }
+
 char Pawn::getSymbol() const {
     return colour == Colour::White ? 'P' : 'p';
 }

@@ -28,11 +28,11 @@ public:
 
     Board(const Board&other);
 
-    Board(Board&&other);
+    Board(Board&&other) = default;
 
     Board &operator=(const Board&other);
 
-    Board &operator=(Board &&other);
+    Board &operator=(Board &&other) = default;
 
     ~Board() = default;
 

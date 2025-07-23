@@ -3,6 +3,8 @@
 
 Rook::Rook(Colour c) : Piece{c} {}
 
+std::unique_ptr<Piece> Rook::clone() const { return std::make_unique<Rook>(*this); }
+
 char Rook::getSymbol() const {
     return colour == Colour::White ? 'R' : 'r';
 }
