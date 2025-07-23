@@ -1,6 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include <string>
+#include <memory>
 #include "colour.h"
 #include <vector>
 #include "board.h"
@@ -67,8 +68,6 @@ void Game::gameRun() {
         } else if (line == "setup" && !isRunning) {
             // setup mode
             Colour turn = Colour::White;
-            bool oneWhiteKing = false;
-            bool oneBlackKing = false;
             CastlingInfo castlingRights{false, false, false, false};
             Posn enPassantTarget{-1, -1};
             vector<vector<char>> setupBoard(8, vector<char>(8));
@@ -86,9 +85,18 @@ void Game::gameRun() {
             while (getline(cin, line)) {                
                 if (line == "done") { // if requirements are met, we can exit setup mode and start the game
                     // we assume castling and en passant are invalid
+                    
+                    // Count kings on the board
+                    int whiteKingCount = 0;
+                    int blackKingCount = 0;
+                    for (int i = 0; i < 8; i++) {
+                        for (int j = 0; j < 8; j++) {
+                            if (setupBoard[i][j] == 'K') whiteKingCount++;
+                            if (setupBoard[i][j] == 'k') blackKingCount++;
+                        }
+                    }
 
-
-                    if (oneWhiteKing && oneBlackKing) {// first check if both kings are present
+                    if (whiteKingCount == 1 && blackKingCount == 1) {// first check if both kings are present
                         Board tempBoard;
                         State state{turn, GameStatus::IN_PROGRESS, castlingRights, enPassantTarget, setupBoard};
                         tempBoard.changeState(state);
@@ -111,7 +119,8 @@ void Game::gameRun() {
                             }    
                         }
                     } else {
-                        cout << "invalid board, can't exit. King number is not correct" << endl;
+                        cout << "invalid board, can't exit. Must have exactly one king of each color (found " 
+                             << whiteKingCount << " white kings, " << blackKingCount << " black kings)" << endl;
                     }
                 } else if (line == "= black") {
                     turn = Colour::Black;
@@ -153,39 +162,25 @@ void Game::gameRun() {
                 }
             }
             //the setup mode is done, we can start the game
-        } else if (line == "setup" && !isRunning) {
+        } else if (line == "setup" && isRunning) {
             cout << "can't enter setup mode, because game is running" << endl;
-        } else if (line.substr(0, 4) == "move" && isRunning) {
+        } else if (line.substr(0, 4) == "move" && isRunning) {// the move command
             State currentState = board.getGameState();
-            Move move;
-            if (currentState.turn == Colour::White) {
-                move = whitePlayer->makeMove(board);
-            } else {
-                move = blackPlayer->makeMove(board);
-            }
-
-            // check if the move is legal
-            if(board.movePiece(move)) {
-                // successful move
-            } else {
-                cout << "illegal move" << endl; // the move is not made because it is illegal
-            }
-
-            // the code in this else if block needs to be changed -----------------------------------------------------------
-            try {
-                Posn from = convertToPosn(line.substr(5, 7));
-                Posn to = convertToPosn(line.substr(8, 10));
-                if (line.length() == 12) {
-                    char promo = line[11];
-                    Move move{from, to, promo};
-                    board.movePiece(move);
+            Player* currentPlayer = (currentState.turn == Colour::White) ? whitePlayer.get() : blackPlayer.get();
+            
+            if (currentPlayer->isValidCommand(line)) {
+                Move move = currentPlayer->makeMove(board, line);
+                
+                // check if the move is legal
+                if(board.movePiece(move)) {
+                    // successful move
                 } else {
-                    Move move{from, to, ' '};
-                    board.movePiece(move);
+                    cout << "illegal move" << endl;
                 }
-            } catch (const std::invalid_argument&) {
+            } else {
                 cout << "invalid move command" << endl;
             }
+
         } else if (line.substr(0, 4) == "move" && !isRunning) {
             cout << "can't move, because game is not running" << endl;
         } else if (line.substr(0, 4) == "undo" && isRunning) {

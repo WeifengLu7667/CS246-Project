@@ -6,8 +6,11 @@
 #include "move.h"
 
 class HumanPlayer: public Player {
+    Posn convertToPosn(const std::string& posnStr);
+    
 public:
-    Move makeMove(Board &board) override;
+    bool isValidCommand(const std::string& line) override;
+    Move makeMove(Board &board, const std::string& line) override;
 };
 
 #endif

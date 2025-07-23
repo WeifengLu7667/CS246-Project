@@ -1,16 +1,18 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
+#include <memory>
 #include "player.h"
 #include "board.h"
 #include "move.h"
 #include "strategy.h"
 
 class ComputerPlayer: public Player {
-    unique_ptr<Strategy> strategy;
+    std::unique_ptr<Strategy> strategy;
 public:
-    Move makeMove(Board &board) override;
-
+    ComputerPlayer(std::unique_ptr<Strategy> strategy);
+    bool isValidCommand(const std::string& line) override;
+    Move makeMove(Board &board, const std::string& line) override;
 };
 
 #endif

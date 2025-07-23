@@ -12,7 +12,8 @@ class Player {
 public:
     std::string getName() const;
     Colour getColour() const;
-    virtual Move makeMove(Board &board) = 0;
+    virtual bool isValidCommand(const std::string& line) = 0;
+    virtual Move makeMove(Board &board, const std::string& line) = 0;
 };  
 
 #endif
