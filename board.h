@@ -63,11 +63,9 @@ public:
     void setupFromFen(const std::string& s);
 
     // return the possible move
-    std::vector<Move> legalMoves(Colour) const;
+    std::vector<Move> legalMoves(Colour c) const;
 
     void changeState(State newState);
-
-    void placePiece(char sym, Posn p);
 
     void removePiece(Posn p);
 
