@@ -36,6 +36,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
             out << std::endl;
         }
     }
+    out << std::endl;
     out << " ";
     for (int f = 'a'; f < 'a' + static_cast<int>(n); ++f) {
         out << static_cast<char>(f);
