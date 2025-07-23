@@ -18,6 +18,7 @@ Move Level2::chooseMove(Board& board, Colour colour) {
     std::vector<Move> checkMoves;
     std::vector<Move> captureMoves;
 
+    // Collect checkmate & check & capture moves
     for (const Move& mv : allMoves) {
         Board copy = board;
         copy.movePiece(mv);
