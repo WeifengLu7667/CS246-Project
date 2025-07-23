@@ -17,3 +17,6 @@ void Subject::detach(Observer* o) {
 void Subject::notifyObservers() {
     for (auto p : observers) p->notify();
 }
+
+// Pure virtual destructor implementation
+Subject::~Subject() {}

@@ -15,6 +15,12 @@
 
 using namespace std;
 
+Game::Game() : useDefaultBoard(true), isRunning(false) {
+    // Create TextDisplay and properly attach it to the Board using observer pattern
+    textDisplay = std::make_unique<TextDisplay>(&board);
+    board.attach(textDisplay.get());
+}
+
 Posn Game::convertToPosn(const std::string& posnStr) {// may throw invalid_argument if the position string is invalid
     if (posnStr.length() != 2) {
         throw std::invalid_argument("Invalid position string");
@@ -45,8 +51,6 @@ void Game::gameRun() {
     cout << "Hello World!" << endl; // to be removed
     cout << "Test" << endl; // to be removed
     string line;
-    useDefaultBoard = true;
-    isRunning = false;
     scoreboard.startGame();
 
     while (getline(cin, line)) {
@@ -173,7 +177,8 @@ void Game::gameRun() {
                 
                 // check if the move is legal
                 if(board.movePiece(move)) {
-                    // successful move
+                    // successful move - display the board
+                    cout << *textDisplay << endl;
                 } else {
                     cout << "illegal move" << endl;
                 }
@@ -250,6 +255,8 @@ void Game::gameRun() {
                     board.setupDefaultBoard();
                 }
                 isRunning = true;
+                // Display the initial board
+                cout << *textDisplay << endl;
             }
 
         } else if (line.substr(0, 4) == "help") {

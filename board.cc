@@ -7,6 +7,7 @@
 #include "queen.h"
 #include "rook.h"
 #include "move.h"
+#include "textdisplay.h"
 
 #include <iostream>
 #include <vector>
@@ -14,7 +15,9 @@
 
 // Big 5
 Board::Board(std::size_t gridSize): 
-	board(gridSize, Row(gridSize)), gridSize{gridSize} {};
+	board(gridSize, Row(gridSize)), gridSize{gridSize} {
+	// TextDisplay will be attached by the Game controller
+}
 
 Board::Board(const Board&other):gridSize{other.gridSize}, 
 				board(other.gridSize, Row(other.gridSize)), state{other.state} {
@@ -23,6 +26,7 @@ Board::Board(const Board&other):gridSize{other.gridSize},
 			if (other.board[r][c]) board[r][c] = other.board[r][c]->clone();
 		}
 	}
+	// TextDisplay will be attached by the Game controller
 }
 
 
@@ -39,6 +43,7 @@ Board &Board::operator=(const Board&other) {
 			else board[r][c].reset();
 		}
 	}
+	// TextDisplay will be attached by the Game controller
 	return *this;
 }
 
@@ -154,7 +159,7 @@ bool Board::isCheck(Colour c) const {
 			const auto &piece = board[row][col];
 			piecePos = {static_cast<int>(row), static_cast<int>(col)};
 
-			if (piece->getColour() != enemyColour) continue;
+			if (!piece || piece->getColour() != enemyColour) continue;
 				
 			const auto moves = piece->getValidMoves(*this, piecePos);
 			if (std::find(moves.begin(), moves.end(), kingPos) != moves.end()) {
@@ -199,28 +204,28 @@ void Board::setupDefaultBoard() {
 
 	// Put Pawn
 	for (std::size_t col = 0; col < gridSize; ++col) {
-		board[1][col] == std::make_unique<Pawn>(Colour::Black, false);
-		board[6][col] == std::make_unique<Pawn>(Colour::White, false);
+		board[1][col] = std::make_unique<Pawn>(Colour::Black);
+		board[6][col] = std::make_unique<Pawn>(Colour::White);
 	}
 
 	// Put Other Pieces
-	board[0][0] = std::make_unique<Rook>(Colour::Black, false);
-	board[0][7] = std::make_unique<Rook>(Colour::Black, false);
-	board[0][1] = std::make_unique<Knight>(Colour::Black, false);
-	board[0][6] = std::make_unique<Knight>(Colour::Black, false);
-	board[0][2] = std::make_unique<Bishop>(Colour::Black, false);
-	board[0][5] = std::make_unique<Bishop>(Colour::Black, false);
-	board[0][3] = std::make_unique<Queen>(Colour::Black, false);
-	board[0][4] = std::make_unique<King>(Colour::Black, false);
+	board[0][0] = std::make_unique<Rook>(Colour::Black);
+	board[0][7] = std::make_unique<Rook>(Colour::Black);
+	board[0][1] = std::make_unique<Knight>(Colour::Black);
+	board[0][6] = std::make_unique<Knight>(Colour::Black);
+	board[0][2] = std::make_unique<Bishop>(Colour::Black);
+	board[0][5] = std::make_unique<Bishop>(Colour::Black);
+	board[0][3] = std::make_unique<Queen>(Colour::Black);
+	board[0][4] = std::make_unique<King>(Colour::Black);
 
-	board[7][0] = std::make_unique<Rook>(Colour::White, false);
-	board[7][7] = std::make_unique<Rook>(Colour::White, false);
-	board[7][1] = std::make_unique<Knight>(Colour::White, false);
-	board[7][6] = std::make_unique<Knight>(Colour::White, false);
-	board[7][2] = std::make_unique<Bishop>(Colour::White, false);
-	board[7][5] = std::make_unique<Bishop>(Colour::White, false);
-	board[7][3] = std::make_unique<Queen>(Colour::White, false);
-	board[7][4] = std::make_unique<King>(Colour::White, false);
+	board[7][0] = std::make_unique<Rook>(Colour::White);
+	board[7][7] = std::make_unique<Rook>(Colour::White);
+	board[7][1] = std::make_unique<Knight>(Colour::White);
+	board[7][6] = std::make_unique<Knight>(Colour::White);
+	board[7][2] = std::make_unique<Bishop>(Colour::White);
+	board[7][5] = std::make_unique<Bishop>(Colour::White);
+	board[7][3] = std::make_unique<Queen>(Colour::White);
+	board[7][4] = std::make_unique<King>(Colour::White);
 	 
 	state.turn = Colour::White;
     state.status = GameStatus::IN_PROGRESS;

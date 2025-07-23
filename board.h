@@ -18,6 +18,7 @@ class Board: public Subject {
     std::size_t gridSize;
 
     State state;
+    
     // Private Methods
     // Mutate State to a new board text display
     void snapshotBoard();
@@ -68,7 +69,6 @@ public:
     void changeState(State newState);
 
     void removePiece(Posn p);
-
 };
 
 #endif

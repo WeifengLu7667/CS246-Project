@@ -33,11 +33,11 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
         out << (n - r) << " "; 
         for (char c : td.theTextDisplay[r]) {
             out << c;
-            out << std::endl;
         }
+        out << std::endl;
     }
     out << std::endl;
-    out << " ";
+    out << "  ";
     for (int f = 'a'; f < 'a' + static_cast<int>(n); ++f) {
         out << static_cast<char>(f);
     }
