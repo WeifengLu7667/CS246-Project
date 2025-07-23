@@ -4,6 +4,10 @@
 #include "colour.h"
 #include <vector>
 #include "board.h"
+#include "humanplayer.h"
+#include "computerplayer.h"
+#include "player.h"
+
 using namespace std;
 
 Posn Game::convertToPosn(const std::string& posnStr) {// may throw invalid_argument if the position string is invalid
@@ -33,13 +37,15 @@ void Game::displayBoard(const std::vector<std::vector<char>>& setupBoard) {
 }
 
 void Game::gameRun() { 
-    cout << "Hello World!" << endl;
-    cout << "Test" << endl;
+    cout << "Hello World!" << endl; // to be removed
+    cout << "Test" << endl; // to be removed
     string line;
 
     while (getline(cin, line)) {
-        if (line == "resign") {
+        if (line == "resign" && isRunning) {
             //add code here
+        } else if (line == "resign" && !isRunning) {
+            cout << "can't resign, because game is not running" << endl;
         } else if (line == "setup" && !isRunning) {
             // setup mode
             Colour turn;
@@ -129,8 +135,8 @@ void Game::gameRun() {
             //the setup mode is done, we can start the game
         } else if (line == "setup" && !isRunning) {
             cout << "can't enter setup mode, because game is running" << endl;
-        } else if (line.substr(0, 4) == "move") {
-            // the code in this else if block needs to be changed
+        } else if (line.substr(0, 4) == "move" && isRunning) {
+            // the code in this else if block needs to be changed -----------------------------------------------------------
             try {
                 Posn from = convertToPosn(line.substr(5, 7));
                 Posn to = convertToPosn(line.substr(8, 10));
@@ -145,10 +151,24 @@ void Game::gameRun() {
             } catch (const std::invalid_argument&) {
                 cout << "invalid move command" << endl;
             }
-        } else if (line.substr(0, 4) == "undo") {
+        } else if (line.substr(0, 4) == "move" && !isRunning) {
+            cout << "can't move, because game is not running" << endl;
+        } else if (line.substr(0, 4) == "undo" && isRunning) {
             // add code here
-        } else if (line.substr(0, 4) == "game") {
-            // add code here
+        } else if (line.substr(0, 4) == "undo" && !isRunning) {
+            cout << "can't undo, because game is not running" << endl;
+        } else if (line.substr(0, 4) == "game" && isRunning) {
+            cout << "can't start a new game, because currentgame is running" << endl;
+        } else if (line.substr(0, 4) == "game" && !isRunning) {
+            size_t spacePos = line.rfind(' ');
+            if (spacePos == string::npos) {
+                cout << "invalid game command" << endl;
+            } else {
+                string whitePlayerType = line.substr(5, spacePos - 5);
+                string blackPlayerType = line.substr(spacePos + 1);
+            }
+            // add code here            
+
         } else if (line.substr(0, 4) == "help") {
             cout << "this feature is not currently supported" << endl;
             // add code for bonus feature
