@@ -21,16 +21,16 @@ Game::Game() : useDefaultBoard(true), isRunning(false) {
     board.attach(textDisplay.get());
 }
 
-Posn Game::convertToPosn(const std::string& posnStr) {// may throw invalid_argument if the position string is invalid
+Posn Game::convertToPosn(const string& posnStr) {// may throw invalid_argument if the position string is invalid
     if (posnStr.length() != 2) {
-        throw std::invalid_argument("Invalid position string");
+        throw invalid_argument("Invalid position string");
     }
     // convert the position string to a Posn object
     // a1 = row 7, col 0; h8 = row 0, col 7
     int col = posnStr[0] - 'a';  // a=0, b=1, ..., h=7
     int row = '8' - posnStr[1];  // 1=7, 2=6, ..., 8=0
     if (col < 0 || col > 7 || row < 0 || row > 7) {
-        throw std::invalid_argument("Invalid position string");
+        throw invalid_argument("Invalid position string");
     }    
     return Posn{row, col};
 }
@@ -144,7 +144,7 @@ void Game::gameRun() {
                         } else {
                             cout << "the position is already empty" << endl;
                         }
-                    } catch (const std::invalid_argument&) {
+                    } catch (const invalid_argument&) {
                         cout << "invalid command in setup mode" << endl;
                     }
                 } else if (line[0] == '+') {
@@ -158,7 +158,7 @@ void Game::gameRun() {
                         } else {
                             cout << "the position is already occupied" << endl;
                         }
-                    } catch (const std::invalid_argument&) {
+                    } catch (const invalid_argument&) {
                         cout << "invalid command in setup mode" << endl;
                     }
                 } else {
