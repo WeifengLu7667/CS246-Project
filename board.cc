@@ -27,17 +27,33 @@ void Board::snapshotBoard() {
 }
 
 bool Board::movePiece(const Move &m) {
-	// Check whether it is a valid move
+	// 0. Sanity Check
 	Posn start = m.from;
 	Posn end = m.to;
 
-	auto &src = board[start.row][start.col];
-	auto &des = board[end.row][end.col];
+	if (start.row < 0 || start.row >= static_cast<int>(gridSize) ||
+		start.col < 0 || start.col >= static_cast<int>(gridSize)) return false;
 
-	if (!src) return false;
+	auto &srcPtr = board[start.row][start.col];
+	if (!srcPtr) return false;
+	Colour c = srcPtr->getColour();
 
-	const auto moves = src->getValidMoves(*this, start);
-	if (std::find(moves.begin(), moves.end(), des) == moves.end()) return false;
+	// 1. Legal Move?
+	std::vector<Move> all = legalMoves(c);
+	bool legal = false;
+
+	for (const Move &lm : all) {
+		if (lm.from == m.from && lm.to == m.to && lm.promo == m.promo) {
+            legal = true;
+            break;
+	}
+
+	if (!legal) return false;
+
+	//add code here 
+	
+
+
 
 	// Update enPassantTarget to State
 	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && abs(end.row - start.row) == 2) {
@@ -55,10 +71,8 @@ bool Board::movePiece(const Move &m) {
     	state.enPassantTarget = Posn{1, 1};
 	}
 
-	des = std::move(src);
 	snapshotBoard();
 	notifyObservers();
-
 	return true;
 }
 
@@ -196,7 +210,7 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 
 						if (!copy.movePiece(m)) continue;
 						if (copy.isCheck(c)) continue;
-						
+
 						legal.push_back(m);
 					}
 				} else {
@@ -215,11 +229,20 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 }
 
 void Board::changeState(State newState) {
-
+	state = newState;
+	notifyObservers();
 }
 
 
 void Board::removePiece(Posn p) {
+	std::size_t row = static_cast<std::size_t>(p.row);
+    std::size_t col = static_cast<std::size_t>(p.col);
 
+	if (row >= gridSize || col >= gridSize) return;
+
+	board[row][col].reset();
+
+	snapshotBoard();
+	notifyObservers();
 }
 
