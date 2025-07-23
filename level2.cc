@@ -8,4 +8,22 @@ Move Level2::chooseMove(Board& board, Colour colour) {
 
     int numMoves = allMoves.size();
 
+    // Try capture
+    for (int i = 0; i < numMoves; i++) {
+        Posn target = allMoves[i].to;
+        Piece* targetPiece = board.getPieceAt(target.row, target.col);
+        if (targetPiece != nullptr && targetPiece->getColour() != colour) {
+            return allMoves[i];
+        }
+    }
+
+    // No capture possible, back to random legal move
+    static bool seeded = false;
+    if (!seeded) {
+        std::srand(std::time(nullptr));
+        seeded = true;
+    }
+    int index = std::rand() % numMoves;
+
+    return allMoves[index];
 }
