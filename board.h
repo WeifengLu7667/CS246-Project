@@ -80,6 +80,9 @@ public:
     void changeState(State newState);
 
     void removePiece(Posn p);
+
+    // Debug function to help identify castling issues
+    void debugCastling(Colour c) const;
 };
 
 #endif

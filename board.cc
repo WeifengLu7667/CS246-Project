@@ -452,3 +452,47 @@ void Board::removePiece(Posn p) {
 	notifyObservers();
 }
 
+void Board::debugCastling(Colour c) const {
+    std::cout << "=== Castling Debug for " << (c == Colour::White ? "White" : "Black") << " ===" << std::endl;
+    
+    // Print castling rights
+    std::cout << "Castling Rights:" << std::endl;
+    std::cout << "  White King-side: " << (state.castlingRights.whiteKingSide ? "true" : "false") << std::endl;
+    std::cout << "  White Queen-side: " << (state.castlingRights.whiteQueenSide ? "true" : "false") << std::endl;
+    std::cout << "  Black King-side: " << (state.castlingRights.blackKingSide ? "true" : "false") << std::endl;
+    std::cout << "  Black Queen-side: " << (state.castlingRights.blackQueenSide ? "true" : "false") << std::endl;
+    
+    // Check canCastle results
+    std::cout << "Can Castle:" << std::endl;
+    std::cout << "  King-side: " << (canCastle(c, true) ? "true" : "false") << std::endl;
+    std::cout << "  Queen-side: " << (canCastle(c, false) ? "true" : "false") << std::endl;
+    
+    // Check if king is in check
+    std::cout << "In Check: " << (isCheck(c) ? "true" : "false") << std::endl;
+    
+    // Print legal moves for king
+    int kingRow = (c == Colour::White ? 7 : 0);
+    if (board[kingRow][4] && (board[kingRow][4]->getSymbol() == (c == Colour::White ? 'K' : 'k'))) {
+        std::cout << "King is at position: (" << kingRow << ", 4)" << std::endl;
+        auto moves = legalMoves(c);
+        std::cout << "Total legal moves for this color: " << moves.size() << std::endl;
+        
+        std::cout << "Castling moves found:" << std::endl;
+        for (const auto& move : moves) {
+            if (move.from.row == kingRow && move.from.col == 4) {
+                if (move.to.col == 6) {
+                    std::cout << "  King-side castling: (" << move.from.row << "," << move.from.col 
+                             << ") -> (" << move.to.row << "," << move.to.col << ")" << std::endl;
+                } else if (move.to.col == 2) {
+                    std::cout << "  Queen-side castling: (" << move.from.row << "," << move.from.col 
+                             << ") -> (" << move.to.row << "," << move.to.col << ")" << std::endl;
+                }
+            }
+        }
+    } else {
+        std::cout << "King not found at expected position!" << std::endl;
+    }
+    
+    std::cout << "===========================================" << std::endl;
+}
+
