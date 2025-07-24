@@ -102,10 +102,8 @@ bool Board::squareIsAttacked(Posn p, Colour colour) const {
 	for (std::size_t r = 0; r < gridSize; ++r)
         for (std::size_t c = 0; c < gridSize; ++c) {
             if (!board[r][c] || board[r][c]->getColour() != colour) continue;
-            if (std::find(board[r][c]->getValidMoves(*this, {int(r),int(c)}).begin(),
-                          board[r][c]->getValidMoves(*this, {int(r),int(c)}).end(),
-                          p) != board[r][c]->getValidMoves(*this, {int(r),int(c)}).end())
-                return true;
+			auto moves = board[r][c]->getValidMoves(*this, {int(r),int(c)});
+            if (std::find(moves.begin(), moves.end(), p) != moves.end()) return true;
         }
     return false;
 }
