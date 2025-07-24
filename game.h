@@ -30,7 +30,7 @@ private:
     Posn convertToPosn(const std::string& posnStr);
     void displayBoard(const std::vector<std::vector<char>>& setupBoard);
     void resigning();
-    void setupMode(std::string line);
+    void setupMode();
     void moveCommand(std::string line);
     void startGame(std::string line);
 

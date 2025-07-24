@@ -65,8 +65,9 @@ void Game::resigning() {
     useDefaultBoard = true;
 }
 
-void Game::setupMode(string line) {
+void Game::setupMode() {
     // setup mode
+    string line;
     Colour turn = Colour::White;
     CastlingInfo castlingRights{false, false, false, false};
     Posn enPassantTarget{-1, -1};
@@ -128,7 +129,7 @@ void Game::setupMode(string line) {
             turn = Colour::White;
         } else if (line[0] == '-') {
             try {
-                Posn pieceToRemove = convertToPosn(line.substr(2, 4));
+                Posn pieceToRemove = convertToPosn(line.substr(2, 2));
                 if (setupBoard[pieceToRemove.row][pieceToRemove.col] != '_' && setupBoard[pieceToRemove.row][pieceToRemove.col] != ' ') {
                     if ((pieceToRemove.row + pieceToRemove.col) % 2 == 0) {
                         setupBoard[pieceToRemove.row][pieceToRemove.col] = ' ';
@@ -145,7 +146,7 @@ void Game::setupMode(string line) {
             }
         } else if (line[0] == '+') {
             try {
-                Posn pieceToAdd = convertToPosn(line.substr(4, 6));
+                Posn pieceToAdd = convertToPosn(line.substr(4, 2));
                 char pieceSymbol = line[2];
                 if (setupBoard[pieceToAdd.row][pieceToAdd.col] == '_' || setupBoard[pieceToAdd.row][pieceToAdd.col] == ' ') {
                     setupBoard[pieceToAdd.row][pieceToAdd.col] = pieceSymbol;
@@ -261,7 +262,7 @@ void Game::gameRun() {
         } else if (line == "resign" && !isRunning) {
             cout << "can't resign, because game is not running" << endl;
         } else if (line == "setup" && !isRunning) {
-            setupMode(line);
+            setupMode();
         } else if (line == "setup" && isRunning) {
             cout << "can't enter setup mode, because game is running" << endl;
         } else if (line.substr(0, 4) == "move" && isRunning) {// the move command

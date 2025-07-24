@@ -3,6 +3,7 @@
 
 #include "colour.h"
 #include "castlinginfo.h"
+#include "posn.h"
 #include <vector>
 
 enum class GameStatus { IN_PROGRESS, WHITE_IN_CHECK, 
