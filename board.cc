@@ -123,7 +123,7 @@ bool Board::movePiece(const Move &m) {
 	// 0. Sanity Check
 	Posn start = m.from;
 	Posn end = m.to;
-
+	cout << "debug3.1" << endl;
 	if (start.row < 0 || start.row >= static_cast<int>(gridSize) ||
 		start.col < 0 || start.col >= static_cast<int>(gridSize) ||
 		end.row < 0 || end.row >= static_cast<int>(gridSize) ||

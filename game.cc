@@ -167,14 +167,17 @@ void Game::setupMode() {
 void Game::moveCommand(string line) {
     State currentState = board.getGameState();
     Player* currentPlayer = (currentState.turn == Colour::White) ? whitePlayer.get() : blackPlayer.get();
-    
+    cout << "debug1" << endl;
     if (currentPlayer->isValidCommand(line)) {
+        cout << "debug2" << endl;
         Move move = currentPlayer->makeMove(board, line);
-        
+        cout << "debug3" << endl;
         // check if the move is legal
         if(board.movePiece(move)) {
             // successful move - display the board
+            cout << "debug4" << endl;
             cout << *textDisplay << endl;
+            cout << "debug5" << endl;
         } else {
             cout << "illegal move" << endl;
         }
