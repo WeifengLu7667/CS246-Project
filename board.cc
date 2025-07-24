@@ -42,11 +42,16 @@ Board::Board(const Board& other): board(other.gridSize),
 
 
 void Board::snapshotBoard() {
+
+	cout << "debug3.5.10.1" << endl;
 	std::size_t n = gridSize;
     for (std::size_t r = 0; r < n; ++r) {
+
+		cout << "debug3.5.10.2" << endl;
         for (std::size_t c = 0; c < n; ++c) {
             const auto &piece = board[r][c];
-            if (piece) state.board[r][c] = piece->getSymbol();
+			cout << "debug3.5.9.3" << endl;
+            if (piece) {state.board[r][c] = piece->getSymbol(); cout << "debug3.5.9.4" << endl;}
             else state.board[r][c] = ((r + c) & 1) ? '_' : ' ';
         }
     }
@@ -61,16 +66,20 @@ bool Board::movePieceInternal(const Move &m) {
 		start.col < 0 || start.col >= static_cast<int>(gridSize) ||
 		end.row < 0 || end.row >= static_cast<int>(gridSize) ||
 		end.col < 0 || end.col >= static_cast<int>(gridSize)) return false;
-
+	cout << "debug3.5.1" << endl;
 	auto &src = board[start.row][start.col];
 	auto &dst = board[end.row][end.col];
 
+	cout << "debug3.5.2" << endl;
 	if (!src) return false;
+
+	cout << "debug3.5.3" << endl;
 
 	// Clear en passant target at the start of every move
 	Posn previousEnPassantTarget = state.enPassantTarget;
 	state.enPassantTarget = Posn{-1, -1};
 
+	cout << "debug3.5.4" << endl;
 	// 1. En Passant Capture BEFORE we move the pawn
 	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == previousEnPassantTarget) {
     	int capturedRow = (src->getColour() == Colour::White) ? end.row + 1 : end.row - 1;
@@ -78,14 +87,18 @@ bool Board::movePieceInternal(const Move &m) {
     	removePiece(capturedPosn);
 	}
 
+	cout << "debug3.5.5" << endl;
 	// 2. Move/ Capture
 	dst = std::move(src);
 	src.reset();
 
+	cout << "debug3.5.6" << endl;
 	// 3. Promotion
 	bool isWhite = (dst->getColour() == Colour::White);
 	Colour c = dst->getColour();
 
+
+	cout << "debug3.5.7" << endl;
 	if (dst && (dst->getSymbol() == (isWhite ? 'P' : 'p')) && m.promo != ' ') {
 		switch (std::tolower(m.promo)) {
         	case 'q': dst = std::make_unique<Queen>(c); break;
@@ -96,26 +109,39 @@ bool Board::movePieceInternal(const Move &m) {
     	}
 	}
 
+
+	cout << "debug3.5.8" << endl;
 	// 4. Update enPassantTarget to State (only for double pawn moves)
 	if ((dst && (dst->getSymbol() == 'P' || dst->getSymbol() == 'p')) && std::abs(end.row - start.row) == 2) {
     	int middleRow = (start.row + end.row) / 2;
     	state.enPassantTarget = Posn{middleRow, end.col};
 	}
 	
+
+	cout << "debug3.5.9" << endl;
 	// 5. flip turn and update status
 	state.turn = (isWhite ? Colour::Black : Colour::White);
+	cout << "debug3.5.9.1" << endl;
 	if (isCheckMate(state.turn)) {
+		cout << "debug3.5.9.2" << endl;
 		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_WINS : GameStatus::BLACK_WINS);
 	} else if (isStaleMate(state.turn)) {
+		cout << "debug3.5.9.3" << endl;
 		state.status = GameStatus::STALEMATE;
 	} else if (isCheck(state.turn)) {
+		cout << "debug3.5.9.4" << endl;
 		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_IN_CHECK: GameStatus::BLACK_IN_CHECK);
 	} else {
+		cout << "debug3.5.9.5" << endl;
     	state.status = GameStatus::IN_PROGRESS;
 	}
 
+	cout << "debug3.5.10" << endl;
 	snapshotBoard();
+	cout << "here?" << endl;
 	notifyObservers();
+
+	cout << "debug3.5.11" << endl;
 	return true;
 }
 
@@ -131,6 +157,7 @@ bool Board::movePiece(const Move &m) {
 
 	auto &src = board[start.row][start.col];
 
+	cout << "debug3.2" << endl;
 	if (!src) return false;
 	Colour c = src->getColour();
 
@@ -138,6 +165,7 @@ bool Board::movePiece(const Move &m) {
 	std::vector<Move> all = legalMoves(c);
 	bool legal = false;
 
+	cout << "debug3.3" << endl;
 	for (const Move &lm : all) {
 		if (lm.from == m.from && lm.to == m.to && lm.promo == m.promo) {
             legal = true;
@@ -145,9 +173,11 @@ bool Board::movePiece(const Move &m) {
 		}
 	}
 
+	cout << "debug3.4" << endl;
 	if (!legal) return false;
 
 	// Use internal function to perform the actual move
+	cout << "debug3.5" << endl;
 	return movePieceInternal(m);
 }
 
@@ -162,47 +192,60 @@ bool Board::isCheck(Colour c) const {
 	char kingSymbol = (c == Colour::White) ? 'K' : 'k';
 	Posn kingPos = {-1, -1};
 	Posn piecePos = {-1, -1};
-
+	cout << "debug3.5.9.5.1.1" << endl;
 	for (std::size_t row = 0; row < gridSize; ++row) {
+		cout << "debug3.5.9.5.1.2" << endl;
 		for (std::size_t col = 0; col < gridSize; ++ col) {
+			cout << "debug3.5.9.5.1.3" << endl;
 			if (board[row][col] && board[row][col]->getSymbol() == kingSymbol) {
+				cout << "debug3.5.9.5.1.4" << endl;
 				kingPos = {static_cast<int>(row), static_cast<int>(col)};
 				break;
 			}
 		}
 	}
-
+	cout << "debug3.5.9.5.1.5" << endl;
 	Colour enemyColour = (c == Colour::White) ? Colour::Black : Colour::White;
-
+	cout << "debug3.5.9.5.1.6" << endl;
 	for (std::size_t row = 0; row < gridSize; ++row) {
+		cout << "debug3.5.9.5.1.7" << endl;
 		for (std::size_t col = 0; col < gridSize; ++ col) {
+			cout << "debug3.5.9.5.1.8" << endl;
 			const auto &piece = board[row][col];
 			piecePos = {static_cast<int>(row), static_cast<int>(col)};
-
+			cout << "debug3.5.9.5.1.9" << endl;
 			if (!piece || piece->getColour() != enemyColour) continue;
-				
+			cout << "debug3.5.9.5.1.10" << endl;	
 			const auto moves = piece->getValidMoves(*this, piecePos);
+			cout << "debug3.5.9.5.1.11" << endl;
 			if (std::find(moves.begin(), moves.end(), kingPos) != moves.end()) {
+				cout << "debug3.5.9.5.1.12" << endl;
 				return true;
 			}
 		}
+		cout << "debug3.5.9.5.1.13" << endl;
 	}
+	cout << "debug3.5.9.5.1.14" << endl;
 	return false;
 
 }
 
 bool Board::isCheckMate(Colour c) const {
+	cout << "debug3.5.9.5.1" << endl;
 	// 1. in check state
 	// 2. after all legal moves still in check
 	if (!isCheck(c)) return false;
-
+	cout << "debug3.5.9.5.2" << endl;
 	auto moves = legalMoves(c);
+	cout << "debug3.5.9.5.3" << endl;
 	for (const Move &m : moves) {
+		cout << "debug3.5.9.5.4" << endl;
 		Board copy(*this);
-		copy.movePiece(m);
-
-		if (!copy.isCheck(c)) return false;
+		copy.movePieceInternal(m);
+		cout << "debug3.5.9.5.5" << endl;
+		if (!copy.isCheck(c)) {cout << "debug3.5.9.5.6" << endl; return false;}
 	}
+	cout << "debug3.5.9.5.7" << endl;
 	return true;
 }
 
