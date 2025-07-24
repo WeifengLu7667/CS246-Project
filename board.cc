@@ -17,6 +17,7 @@
 Board::Board(std::size_t gridSize): board(gridSize), gridSize{gridSize} {
 	// TextDisplay will be attached by the Game controller
 	for (auto& row : board) row.resize(gridSize);
+	state.board.resize(gridSize, std::vector<char>(gridSize, ' '));
 }
 
 Board::Board(const Board& other): board(other.gridSize), 
@@ -30,6 +31,7 @@ Board::Board(const Board& other): board(other.gridSize),
 			}
 		}
 	}
+	state.board.resize(gridSize, std::vector<char>(gridSize, ' '));
 }
 
 

@@ -13,7 +13,7 @@ class Piece;
 
 class Board: public Subject {
     // Private Fields
-    using Row = vector<std::unique_ptr<Piece>>;
+    using Row = std::vector<std::unique_ptr<Piece>>;
     std::vector<Row> board;
     std::size_t gridSize;
 

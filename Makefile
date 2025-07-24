@@ -1,12 +1,12 @@
 # ---------- compiler & flags -----------------------------------------
 CXX      = g++
 CXXFLAGS = -std=c++20 -Wall -g          # add -I paths here if needed
-LIBS     = -lX11                        # -lXpm if you load XPM sprites
+# LIBS     = -lX11                        # -lXpm if you load XPM sprites (uncomment)
 
 # ---------- source files ---------------------------------------------
 SOURCES = \
     main.cc game.cc scoreboard.cc subject.cc \
-    board.cc state.cc move.cc posn.cc colour.cc castlinginfo.cc \
+    board.cc \
     player.cc humanplayer.cc computerplayer.cc \
     piece.cc king.cc queen.cc rook.cc bishop.cc knight.cc pawn.cc \
     textdisplay.cc graphicaldisplay.cc \

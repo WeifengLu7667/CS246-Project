@@ -9,7 +9,6 @@
 using namespace std;
 
 class Board;
-class Posn;
 
 class Piece {
 protected:
