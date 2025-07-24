@@ -68,16 +68,56 @@ bool Board::movePieceInternal(const Move &m) {
 
 	if (!src) return false;
 
+	/* 1‑A  king moves → both rights for that colour are lost */
+	if (King* k = dynamic_cast<King*>(src.get())) {
+		if (k->getColour() == Colour::White) {
+			state.castlingRights.whiteKingSide  = false;
+			state.castlingRights.whiteQueenSide = false;
+		} else {
+			state.castlingRights.blackKingSide  = false;
+			state.castlingRights.blackQueenSide = false;
+		}
+	}
+
+	// 1‑B  rook moves → the corresponding side is lost             
+	if (Rook* r = dynamic_cast<Rook*>(src.get())) {
+		if (r->getColour() == Colour::White) {
+			if (start == Posn{7,0}) state.castlingRights.whiteQueenSide = false;
+			if (start == Posn{7,7}) state.castlingRights.whiteKingSide  = false;
+		} else {
+			if (start == Posn{0,0}) state.castlingRights.blackQueenSide = false;
+			if (start == Posn{0,7}) state.castlingRights.blackKingSide  = false;
+		}
+	}
+	
 	// Clear en passant target at the start of every move
 	Posn previousEnPassantTarget = state.enPassantTarget;
 	state.enPassantTarget = Posn{-1, -1};
 
-	// 1. En Passant Capture BEFORE we move the pawn
+	// 1.1 En Passant Capture BEFORE we move the pawn
 	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == previousEnPassantTarget) {
     	int capturedRow = (src->getColour() == Colour::White) ? end.row + 1 : end.row - 1;
     	Posn capturedPosn = Posn{capturedRow, end.col};
     	removePiece(capturedPosn);
 	}
+
+	// 1.2 Castling 
+	// Check if this is a castling move
+	if ((src->getSymbol() == 'K' || src->getSymbol() == 'k') &&
+		start.row == end.row && std::abs(static_cast<int>(end.col) - static_cast<int>(start.col)) == 2) {
+		
+		int row = (src->getColour() == Colour::White) ? 7 : 0;
+
+		// King-side castling (short): king moves from e to g (col 4 to 6)
+		if (end.col == 6) {
+			board[row][5] = std::move(board[row][7]);
+		}
+		// Queen-side castling (long): king moves from e to c (col 4 to 2)
+		else if (end.col == 2) {
+			board[row][3] = std::move(board[row][0]);
+		}
+	}
+
 
 	// 2. Move/ Capture
 	dst = std::move(src);
