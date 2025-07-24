@@ -196,15 +196,19 @@ void Game::moveCommand(string line) {
             }
             if (board.isStaleMate(currentColour)) {
                 cout << "Stalemate!" << endl;
-                scoreboard.addScore(Colour::White, 0.5);
-                scoreboard.addScore(Colour::Black, 0.5);
+                scoreboard.addWhiteScore(0.5);
+                scoreboard.addBlackScore(0.5);
             } else if (board.isCheckMate(currentColour)) {
                 cout << "Checkmate! " << message << " wins!" << endl;
-                scoreboard.addScore(currentState.turn, 1);
+                if (currentState.turn == Colour::White) {
+                    scoreboard.addWhiteScore(1);
+                } else {
+                    scoreboard.addBlackScore(1);
+                }
             } else if (board.isCheck(currentColour)) {// if the game is not over, we check if the current player is in check
                 cout << message << " is in check." << endl;
             }
-            
+
         } else {
             cout << "illegal move" << endl;
         }
