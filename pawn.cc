@@ -29,7 +29,7 @@ std::vector<Posn> Pawn::getValidMoves(const Board& b, Posn p) const {
 
     // Capture
     Piece* enemy = nullptr;
-    int enemyRow = p.col + dir;
+    int enemyRow = p.row + dir;
     int enemyColLeft = p.col - 1;
     int enemyColRight = p.col + 1;
 
