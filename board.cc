@@ -54,6 +54,50 @@ void Board::snapshotBoard() {
     }
 }
 
+
+bool Board::canCastle(Colour c, bool kingSide) const {
+	const int row = (c == Colour::White ? 7 : 0);
+	const int kCol = 4;
+	const int rCol = kingSide ? 7 : 0;
+    const int dir = kingSide ? 1 : -1;
+
+	// 1. still have the right
+    const CastlingInfo &cr = state.castlingRights;
+    if (c == Colour::White && (kingSide ? !cr.whiteKingSide : !cr.whiteQueenSide)) return false;
+    if (c == Colour::Black && (kingSide ? !cr.blackKingSide : !cr.blackQueenSide)) return false;
+
+	// 2. check existence of root and king
+	if (!board[row][kCol] || !board[row][rCol]) return false;
+	if (board[row][kCol]->getSymbol() != (c == Colour::White ? 'K' : 'k')) return false;
+	if (board[row][rCol]->getSymbol() != (c == Colour::White ? 'R' : 'r')) return false;
+
+	// 3. check the cells in between are empty
+	for (int c = kCol + dir; c != rCol; c += dir) {
+        if (board[row][c]) return false;
+	}
+
+	// 4. king is not currently in check and will not cross/land in check
+    if (isCheck(c)) return false;
+    Posn step { row, kCol + dir };
+    Posn dest { row, kCol + 2*dir };
+    Colour enemy = (c == Colour::White ? Colour::Black : Colour::White);
+    if (squareIsAttacked(step, enemy) || squareIsAttacked(dest, enemy)) return false;
+
+    return true;
+}
+
+bool Board::squareIsAttacked(Posn p, Colour colour) const {
+	for (std::size_t r = 0; r < gridSize; ++r)
+        for (std::size_t c = 0; c < gridSize; ++c) {
+            if (!board[r][c] || board[r][c]->getColour() != colour) continue;
+            if (std::find(board[r][c]->getValidMoves(*this, {int(r),int(c)}).begin(),
+                          board[r][c]->getValidMoves(*this, {int(r),int(c)}).end(),
+                          p) != board[r][c]->getValidMoves(*this, {int(r),int(c)}).end())
+                return true;
+        }
+    return false;
+}
+
 bool Board::movePieceInternal(const Move &m) {
 	// 0. Sanity Check
 	Posn start = m.from;
@@ -313,8 +357,22 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 			if (!piece || piece->getColour() != c) continue;
 				
 			auto moves = piece->getValidMoves(*this, start);
+
+			// add more possible end posn for king castling
+			bool isKing = (piece->getSymbol() == (white ? 'K' : 'k'));
+
+			if (isKing) {
+				// king side
+				if (canCastle(c, true))
+					legal.push_back(Move{ start, Posn{int(row), 6}, ' ' });
+				// queen side
+				if (canCastle(c, false))
+					legal.push_back(Move{ start, Posn{int(row), 2}, ' ' });
+			}
+
 			if (moves.empty()) continue;
 
+			// generate legal move for promotion
 			for (const Posn& end : moves) {
 
 				bool isPawn = (piece->getSymbol() == (white ? 'P' : 'p'));

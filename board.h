@@ -28,6 +28,12 @@ class Board: public Subject {
     // Internal move function without legal move validation (for legalMoves to use)
     bool movePieceInternal(const Move &m);
 
+    // Return true if every castling condition is satisfied
+    bool canCastle(Colour c, bool kingSide) const;
+
+
+    bool squareIsAttacked(Posn p, Colour colour) const;
+
 public:
     // Big Five
     explicit Board(std::size_t gridSize = 8);
