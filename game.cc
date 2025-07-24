@@ -291,9 +291,7 @@ void Game::gameRun() {
         } else {
             cout << "invalid command" << endl;
         } 
-
-
-
     }
-    cout << "error reading input" << endl;
+    // Print final score when program ends (Ctrl-D pressed)
+    scoreboard.printScore(cout);
 }
