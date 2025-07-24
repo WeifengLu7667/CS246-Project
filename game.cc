@@ -182,25 +182,6 @@ void Game::moveCommand(string line) {
             return;
         }
 
-        // debug to be removed below -------------------------------------------------------------
-        cout << "from " << move.from.row << ", " << move.from.col << " to " << move.to.row << ", " << move.to.col;
-        if (move.promo != ' ') {
-            cout << " promote to " << move.promo;
-        }
-        cout << endl;
-        if (currentState.turn == Colour::White) {
-            cout << "turn: white" << endl;
-        } else {
-            cout << "turn: black" << endl;
-        }
-        
-        // Debug castling if this looks like a castling move
-        if ((move.from.col == 4 && (move.to.col == 2 || move.to.col == 6)) && 
-            (move.from.row == 0 || move.from.row == 7)) {
-            cout << "Castling move detected, debugging..." << endl;
-            board.debugCastling(currentState.turn);
-        }
-        // debug to be removed above -------------------------------------------------------------
 
         // check if the move is legal
         if(board.movePiece(move)) {
@@ -308,8 +289,6 @@ void Game::startGame(string line) {
 }
 
 void Game::gameRun() { 
-    cout << "Hello World!" << endl; // to be removed
-    cout << "Test" << endl; // to be removed
     string line;
     scoreboard.startGame();
 
