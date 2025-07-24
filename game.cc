@@ -205,6 +205,8 @@ void Game::moveCommand(string line) {
                 cout << "Stalemate!" << endl;
                 scoreboard.addWhiteScore(0.5);
                 scoreboard.addBlackScore(0.5);
+                isRunning = false;
+                useDefaultBoard = true;
             } else if (board.isCheckMate(currentColour)) {
                 cout << "Checkmate! " << winMessage << endl;
                 if (currentState.turn == Colour::White) {
@@ -212,6 +214,8 @@ void Game::moveCommand(string line) {
                 } else {
                     scoreboard.addBlackScore(1);
                 }
+                isRunning = false;
+                useDefaultBoard = true;
             } else if (board.isCheck(currentColour)) {// if the game is not over, we check if the current player is in check
                 cout << message << " is in check." << endl;
             }
@@ -287,8 +291,16 @@ void Game::startGame(string line) {
         isRunning = true;
         // Display the initial board
         cout << *textDisplay << endl;
-    }
 
+        // check if it's stalemate
+        if (board.isStaleMate(board.getGameState().turn)) {
+            cout << "Stalemate!" << endl;
+            isRunning = false;
+            scoreboard.addWhiteScore(0.5);
+            scoreboard.addBlackScore(0.5);
+            useDefaultBoard = true;
+        }
+    }
 }
 
 void Game::gameRun() { 
