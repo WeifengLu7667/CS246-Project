@@ -169,8 +169,16 @@ void Game::moveCommand(string line) {
     Player* currentPlayer = (currentState.turn == Colour::White) ? whitePlayer.get() : blackPlayer.get();
     if (currentPlayer->isValidCommand(line)) {
         Move move = currentPlayer->makeMove(board, line);
+
+        // to be removed below -------------------------------------------------------------
         cout << "from " << move.from.row << ", " << move.from.col << " to " << move.to.row << ", " << move.to.col << endl;
-        cout << "turn: " << currentState.turn << endl;
+        if (currentState.turn == Colour::White) {
+            cout << "turn: white" << endl;
+        } else {
+            cout << "turn: black" << endl;
+        }
+        // to be removed above -------------------------------------------------------------
+
         // check if the move is legal
         if(board.movePiece(move)) {
             // successful move - display the board
