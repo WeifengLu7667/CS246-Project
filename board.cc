@@ -87,9 +87,9 @@ bool Board::movePiece(const Move &m) {
 	src.reset();
 
 	// 3. Promotion
-	bool colour = (dst->getColour() == Colour::White);
+	bool isWhite = (dst->getColour() == Colour::White);
 
-	if (dst && (dst->getSymbol() == (colour ? 'P' : 'p')) && m.promo != ' ') {
+	if (dst && (dst->getSymbol() == (isWhite ? 'P' : 'p')) && m.promo != ' ') {
 		switch (std::tolower(m.promo)) {
         	case 'q': dst = std::make_unique<Queen>(c); break;
         	case 'r': dst = std::make_unique<Rook>(c); break;
@@ -100,15 +100,15 @@ bool Board::movePiece(const Move &m) {
 	}
 
 	// 4. Update enPassantTarget to State
-	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && abs(end.row - start.row) == 2) {
-        int middleRow = (start.row + end.row) / 2;
-        state.enPassantTarget = Posn{middleRow, start.col};
-    } else {
-        state.enPassantTarget = Posn{-1, -1};
-    }
+	if ((dst && (dst->getSymbol() == 'P' || dst->getSymbol() == 'p')) && std::abs(end.row - start.row) == 2) {
+    	int middleRow = (start.row + end.row) / 2;
+    	state.enPassantTarget = Posn{middleRow, start.col};
+	} else {
+    	state.enPassantTarget = Posn{-1, -1};
+	}
 	
 	// 5. flip turn and update status
-	state.turn = (colour ? Colour::Black : Colour::White);
+	state.turn = (isWhite ? Colour::Black : Colour::White);
 	if (isCheckMate(state.turn)) {
 		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_WINS : GameStatus::BLACK_WINS);
 	} else if (isStaleMate(state.turn)) {
