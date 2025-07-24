@@ -117,31 +117,9 @@ bool Board::movePieceInternal(const Move &m) {
     	state.enPassantTarget = Posn{middleRow, end.col};
 	}
 	
-
-	cout << "debug3.5.9" << endl;
-	// 5. flip turn and update status
+	// 5. Just flip the turn - no status checking
 	state.turn = (isWhite ? Colour::Black : Colour::White);
-	cout << "debug3.5.9.1" << endl;
-	if (isCheckMate(state.turn)) {
-		cout << "debug3.5.9.2" << endl;
-		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_WINS : GameStatus::BLACK_WINS);
-	} else if (isStaleMate(state.turn)) {
-		cout << "debug3.5.9.3" << endl;
-		state.status = GameStatus::STALEMATE;
-	} else if (isCheck(state.turn)) {
-		cout << "debug3.5.9.4" << endl;
-		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_IN_CHECK: GameStatus::BLACK_IN_CHECK);
-	} else {
-		cout << "debug3.5.9.5" << endl;
-    	state.status = GameStatus::IN_PROGRESS;
-	}
 
-	cout << "debug3.5.10" << endl;
-	snapshotBoard();
-	cout << "here?" << endl;
-	notifyObservers();
-
-	cout << "debug3.5.11" << endl;
 	return true;
 }
 
@@ -178,7 +156,32 @@ bool Board::movePiece(const Move &m) {
 
 	// Use internal function to perform the actual move
 	cout << "debug3.5" << endl;
-	return movePieceInternal(m);
+	if (!movePieceInternal(m)) return false;
+
+	// 3. Update game status after the move
+	cout << "debug3.5.9" << endl;
+	if (isCheckMate(state.turn)) {
+		cout << "debug3.5.9.2" << endl;
+		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_WINS : GameStatus::BLACK_WINS);
+	} else if (isStaleMate(state.turn)) {
+		cout << "debug3.5.9.3" << endl;
+		state.status = GameStatus::STALEMATE;
+	} else if (isCheck(state.turn)) {
+		cout << "debug3.5.9.4" << endl;
+		state.status = ((state.turn == Colour::Black) ? GameStatus::WHITE_IN_CHECK: GameStatus::BLACK_IN_CHECK);
+	} else {
+		cout << "debug3.5.9.5" << endl;
+    	state.status = GameStatus::IN_PROGRESS;
+	}
+
+	// 4. Update observers
+	cout << "debug3.5.10" << endl;
+	snapshotBoard();
+	cout << "here?" << endl;
+	notifyObservers();
+
+	cout << "debug3.5.11" << endl;
+	return true;
 }
 
 Piece* Board::getPieceAt(std::size_t x, std::size_t y) const {
@@ -241,7 +244,7 @@ bool Board::isCheckMate(Colour c) const {
 	for (const Move &m : moves) {
 		cout << "debug3.5.9.5.4" << endl;
 		Board copy(*this);
-		copy.movePieceInternal(m);
+		copy.movePieceInternal(m); // Pass false to prevent infinite recursion
 		cout << "debug3.5.9.5.5" << endl;
 		if (!copy.isCheck(c)) {cout << "debug3.5.9.5.6" << endl; return false;}
 	}
