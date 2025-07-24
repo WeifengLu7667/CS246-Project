@@ -5,7 +5,8 @@
 #include "board.h"
 #include "move.h"
 
-// Prefer Retreat (avoid being captured) > Capture (High Value > Low Value) > Random Legal Moves
+// Prefer Retreat (avoid being captured) > Capture > Random Legal Moves
+// Now prioritize High value pieces in both Retreat and Capture
 class Level4: public Strategy {
     public:
         Move chooseMove(Board &board, Colour colour) override;
