@@ -191,19 +191,22 @@ void Game::moveCommand(string line) {
             // check if the game is over
             Colour currentColour;
             string message;
+            string winMessage;
             if (currentState.turn == Colour::White) {
                 currentColour = Colour::Black;
                 message = "Black";
+                winMessage = "White wins!";
             } else {
                 currentColour = Colour::White;
                 message = "White";
+                winMessage = "Black wins!";
             }
             if (board.isStaleMate(currentColour)) {
                 cout << "Stalemate!" << endl;
                 scoreboard.addWhiteScore(0.5);
                 scoreboard.addBlackScore(0.5);
             } else if (board.isCheckMate(currentColour)) {
-                cout << "Checkmate! " << message << " wins!" << endl;
+                cout << "Checkmate! " << winMessage << endl;
                 if (currentState.turn == Colour::White) {
                     scoreboard.addWhiteScore(1);
                 } else {
