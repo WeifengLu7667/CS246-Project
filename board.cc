@@ -94,7 +94,6 @@ bool Board::movePiece(const Move &m) {
 
 	// 2. Move/ Capture
 	dst = std::move(src);
-	src.reset();
 
 	// 3. Promotion
 	bool isWhite = (dst->getColour() == Colour::White);
