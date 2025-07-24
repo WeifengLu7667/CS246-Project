@@ -170,8 +170,23 @@ void Game::moveCommand(string line) {
     if (currentPlayer->isValidCommand(line)) {
         Move move = currentPlayer->makeMove(board, line);
 
+        // Check if the piece being moved belongs to the current player
+        Piece* pieceToMove = board.getPieceAt(move.from.row, move.from.col);
+        if (!pieceToMove) {
+            cout << "illegal move - no piece at source position" << endl;
+            return;
+        }
+        if (pieceToMove->getColour() != currentPlayer->getColour()) {
+            cout << "illegal move - cannot move opponent's piece" << endl;
+            return;
+        }
+
         // debug to be removed below -------------------------------------------------------------
-        cout << "from " << move.from.row << ", " << move.from.col << " to " << move.to.row << ", " << move.to.col << endl;
+        cout << "from " << move.from.row << ", " << move.from.col << " to " << move.to.row << ", " << move.to.col;
+        if (move.promo != ' ') {
+            cout << " promote to " << move.promo;
+        }
+        cout << endl;
         if (currentState.turn == Colour::White) {
             cout << "turn: white" << endl;
         } else {
