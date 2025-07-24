@@ -1,0 +1,32 @@
+[33mad3931e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m add debug function on board.h.cc
+[33m25706d1[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m updates
+[33m7b4eb9d[m try to fix castling
+[33m3a9ed64[m castling
+[33mdee58be[m Add: move Rook after castling
+[33m11f5cc4[m modified changeState
+[33m3075758[m errors right most pawn
+[33m4c9b4b4[m remove debug comments
+[33m9df08f8[m update movePieceInternal
+[33m1c07200[m updates
+[33m61240fd[m debug comment
+[33mbac4552[m Update getpieceat
+[33m32f4367[m change board.cc.h
+[33mabaa0f5[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m61bd103[m edit board.h.cc
+[33m03e3f7e[m updates
+[33ma02075b[m updates
+[33m32228f7[m updates
+[33mcc754d7[m updates
+[33m59be7ae[m updates
+[33mce99a12[m update subject.h .cc, textdisplay.cc, game.h.cc, board.h.cc
+[33m3bf68b4[m updates
+[33m6ea7d14[m updates
+[33m9b76f9d[m updates
+[33m60199b2[m updates
+[33m0c15e68[m updates
+[33mc808325[m updates
+[33md969672[m updates
+[33m3c9f4cd[m updates
+[33m4546a76[m updates
+[33mb0bd7c5[m updates
+[33m7a99a58[m updates

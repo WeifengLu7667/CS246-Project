@@ -193,6 +193,13 @@ void Game::moveCommand(string line) {
         } else {
             cout << "turn: black" << endl;
         }
+        
+        // Debug castling if this looks like a castling move
+        if ((move.from.col == 4 && (move.to.col == 2 || move.to.col == 6)) && 
+            (move.from.row == 0 || move.from.row == 7)) {
+            cout << "Castling move detected, debugging..." << endl;
+            board.debugCastling(currentState.turn);
+        }
         // debug to be removed above -------------------------------------------------------------
 
         // check if the move is legal
