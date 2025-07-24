@@ -362,12 +362,14 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 			bool isKing = (piece->getSymbol() == (white ? 'K' : 'k'));
 
 			if (isKing) {
+				// Use the correct castling row (7 for white, 0 for black)
+				int castlingRow = (c == Colour::White ? 7 : 0);
 				// king side
 				if (canCastle(c, true))
-					legal.push_back(Move{ start, Posn{int(row), 6}, ' ' });
+					legal.push_back(Move{ start, Posn{castlingRow, 6}, ' ' });
 				// queen side
 				if (canCastle(c, false))
-					legal.push_back(Move{ start, Posn{int(row), 2}, ' ' });
+					legal.push_back(Move{ start, Posn{castlingRow, 2}, ' ' });
 			}
 
 			if (moves.empty()) continue;
