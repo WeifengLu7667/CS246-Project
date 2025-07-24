@@ -152,6 +152,9 @@ bool Board::movePiece(const Move &m) {
 }
 
 Piece* Board::getPieceAt(std::size_t x, std::size_t y) const {
+	if (x < 0 || x >= gridSize || y < 0 || y >= gridSize) {
+        return nullptr;
+    }
 	return board[x][y].get();
 }
 
