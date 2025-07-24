@@ -61,28 +61,40 @@ bool Board::canCastle(Colour c, bool kingSide) const {
 	const int rCol = kingSide ? 7 : 0;
     const int dir = kingSide ? 1 : -1;
 
+	cout << "inside canCastle, row: " << row << ", kCol: " << kCol << ", rCol: " << rCol << ", dir: " << dir << endl;
+
 	// 1. still have the right
     const CastlingInfo &cr = state.castlingRights;
+	cout << "cr.whiteKingSide: " << cr.whiteKingSide << ", cr.whiteQueenSide: " << cr.whiteQueenSide << endl;
+	cout << "cr.blackKingSide: " << cr.blackKingSide << ", cr.blackQueenSide: " << cr.blackQueenSide << endl;
+
     if (c == Colour::White && (kingSide ? !cr.whiteKingSide : !cr.whiteQueenSide)) return false;
+	cout << "debug1" << endl;
     if (c == Colour::Black && (kingSide ? !cr.blackKingSide : !cr.blackQueenSide)) return false;
+	cout << "debug2" << endl;
 
 	// 2. check existence of root and king
 	if (!board[row][kCol] || !board[row][rCol]) return false;
+	cout << "debug3" << endl;
 	if (board[row][kCol]->getSymbol() != (c == Colour::White ? 'K' : 'k')) return false;
+	cout << "debug4" << endl;
 	if (board[row][rCol]->getSymbol() != (c == Colour::White ? 'R' : 'r')) return false;
+	cout << "debug5" << endl;
 
 	// 3. check the cells in between are empty
 	for (int c = kCol + dir; c != rCol; c += dir) {
+		cout << "debug6row: " << row << ", c: " << c << endl;
         if (board[row][c]) return false;
 	}
-
+	cout << "debug7" << endl;
 	// 4. king is not currently in check and will not cross/land in check
     if (isCheck(c)) return false;
+	cout << "debug8" << endl;
     Posn step { row, kCol + dir };
     Posn dest { row, kCol + 2*dir };
     Colour enemy = (c == Colour::White ? Colour::Black : Colour::White);
     if (squareIsAttacked(step, enemy) || squareIsAttacked(dest, enemy)) return false;
-
+	cout << "debug9" << endl;
     return true;
 }
 
