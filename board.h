@@ -8,6 +8,8 @@
 #include "move.h"
 #include <vector>
 #include <memory>
+#include <cstddef> // try to remove later
+#include <string>
 
 class Piece;
 

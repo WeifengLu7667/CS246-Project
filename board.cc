@@ -12,6 +12,11 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
+#include <cstddef> // try to remove later
+#include <cctype> // try to remove later
+#include <cmath> // try to remove later
+#include <utility>
 
 // Big 5
 Board::Board(std::size_t gridSize): board(gridSize), gridSize{gridSize} {
@@ -53,7 +58,9 @@ bool Board::movePiece(const Move &m) {
 	Posn end = m.to;
 
 	if (start.row < 0 || start.row >= static_cast<int>(gridSize) ||
-		start.col < 0 || start.col >= static_cast<int>(gridSize)) return false;
+		start.col < 0 || start.col >= static_cast<int>(gridSize) ||
+		end.row < 0 || end.row >= static_cast<int>(gridSize) ||
+		end.col < 0 || end.col >= static_cast<int>(gridSize)) return false;
 
 	auto &src = board[start.row][start.col];
 	auto &dst = board[end.row][end.col];
@@ -74,12 +81,15 @@ bool Board::movePiece(const Move &m) {
 
 	if (!legal) return false;
 
+	// Clear en passant target at the start of every move
+	Posn previousEnPassantTarget = state.enPassantTarget;
+	state.enPassantTarget = Posn{-1, -1};
+
 	// 1. En Passant Capture BEFORE we move the pawn
-	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == state.enPassantTarget) {
+	if ((src->getSymbol() == 'P' || src->getSymbol() == 'p') && end == previousEnPassantTarget) {
     	int capturedRow = (src->getColour() == Colour::White) ? end.row + 1 : end.row - 1;
     	Posn capturedPosn = Posn{capturedRow, end.col};
     	removePiece(capturedPosn);
-    	state.enPassantTarget = Posn{-1, -1};
 	}
 
 	// 2. Move/ Capture
@@ -99,12 +109,10 @@ bool Board::movePiece(const Move &m) {
     }
 	}
 
-	// 4. Update enPassantTarget to State
+	// 4. Update enPassantTarget to State (only for double pawn moves)
 	if ((dst && (dst->getSymbol() == 'P' || dst->getSymbol() == 'p')) && std::abs(end.row - start.row) == 2) {
     	int middleRow = (start.row + end.row) / 2;
-    	state.enPassantTarget = Posn{middleRow, start.col};
-	} else {
-    	state.enPassantTarget = Posn{-1, -1};
+    	state.enPassantTarget = Posn{middleRow, end.col};
 	}
 	
 	// 5. flip turn and update status
