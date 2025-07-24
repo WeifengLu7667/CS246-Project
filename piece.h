@@ -5,6 +5,7 @@
 #include "board.h"
 #include "posn.h"
 #include "colour.h"
+#include <memory>
 
 using namespace std;
 
@@ -26,9 +27,9 @@ public:
     // Pure virtual
     virtual char getSymbol() const = 0;
     
-    virtual std::unique_ptr<Piece> clone() const = 0;
+    virtual unique_ptr<Piece> clone() const = 0;
 
-    virtual std::vector<Posn> getValidMoves(const Board& b, Posn p) const = 0; // return the possible positions that the piece can move to
+    virtual vector<Posn> getValidMoves(const Board& b, Posn p) const = 0; // return the possible positions that the piece can move to
 };
 
 
