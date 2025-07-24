@@ -170,19 +170,34 @@ void Game::moveCommand(string line) {
     if (currentPlayer->isValidCommand(line)) {
         Move move = currentPlayer->makeMove(board, line);
 
-        // to be removed below -------------------------------------------------------------
+        // debug to be removed below -------------------------------------------------------------
         cout << "from " << move.from.row << ", " << move.from.col << " to " << move.to.row << ", " << move.to.col << endl;
         if (currentState.turn == Colour::White) {
             cout << "turn: white" << endl;
         } else {
             cout << "turn: black" << endl;
         }
-        // to be removed above -------------------------------------------------------------
+        // debug to be removed above -------------------------------------------------------------
 
         // check if the move is legal
         if(board.movePiece(move)) {
             // successful move - display the board
             cout << *textDisplay << endl;
+            // check if the game is over
+            Colour currentColour;
+            string message;
+            if (currentState.turn == Colour::White) {
+                currentColour = Colour::Black;
+                message = "Black wins!";
+            } else {
+                currentColour = Colour::White;
+                message = "White wins!";
+            }
+            if (board.isStaleMate(currentColour)) {
+                cout << "Stalemate!" << endl;
+            } else if (board.isCheckMate(currentColour)) {
+                cout << "Checkmate! " << message << endl;
+            }
         } else {
             cout << "illegal move" << endl;
         }
