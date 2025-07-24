@@ -14,20 +14,22 @@
 #include <algorithm>
 
 // Big 5
-Board::Board(std::size_t gridSize): 
-	board(gridSize, Row(gridSize)), gridSize{gridSize} {
+Board::Board(std::size_t gridSize): board(gridSize), gridSize{gridSize} {
 	// TextDisplay will be attached by the Game controller
+	for (auto& row : board) row.resize(gridSize);
 }
 
-Board::Board(const Board& other)
-    : board(other.gridSize), gridSize{other.gridSize}, state{other.state}
-{
+Board::Board(const Board& other): board(other.gridSize), 
+			gridSize{other.gridSize}, state{other.state} {
     for (auto& row : board) row.resize(gridSize);
 
-    for (std::size_t r = 0; r < gridSize; ++r)
-        for (std::size_t c = 0; c < gridSize; ++c)
-            if (other.board[r][c])
+    for (std::size_t r = 0; r < gridSize; ++r) {
+        for (std::size_t c = 0; c < gridSize; ++c) {
+            if (other.board[r][c]) {
                 board[r][c] = other.board[r][c]->clone();
+			}
+		}
+	}
 }
 
 
