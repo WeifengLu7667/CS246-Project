@@ -26,6 +26,6 @@ std::vector<Posn> King::getValidMoves(const Board& b, Posn p) const {
             }
         }
     }
-    
+
     return validMoves;
 }
