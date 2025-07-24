@@ -278,7 +278,7 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 			for (const Posn& end : moves) {
 
 				bool isPawn = (piece->getSymbol() == (white ? 'P' : 'p'));
-				bool isPromotion = (isPawn && ((end.row == 0) || (end.col == 7)));
+				bool isPromotion = (isPawn && ((end.row == 0) || (end.row == 7)));
 
 				if (isPromotion) {
 					const char promoPieces[4] = {white ? 'Q':'q', white ? 'R':'r', 
