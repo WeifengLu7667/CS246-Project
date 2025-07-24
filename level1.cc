@@ -2,6 +2,7 @@
 #include "move.h"
 #include "board.h"
 #include <random>
+#include <ctime>
 
 Move Level1::chooseMove(Board& board, Colour colour) {
 
