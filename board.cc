@@ -360,7 +360,6 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 
 			// add more possible end posn for king castling
 			bool isKing = (piece->getSymbol() == (white ? 'K' : 'k'));
-
 			if (isKing) {
 				// Use the correct castling row (7 for white, 0 for black)
 				int castlingRow = (c == Colour::White ? 7 : 0);
