@@ -9,6 +9,8 @@ class HumanPlayer: public Player {
     Posn convertToPosn(const std::string& posnStr);
     
 public:
+    HumanPlayer(Colour colour) : Player(colour) {}
+    
     bool isValidCommand(const std::string& line) override;
     Move makeMove(Board &board, const std::string& line) override;
 };

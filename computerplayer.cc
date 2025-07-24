@@ -1,7 +1,7 @@
 #include "computerplayer.h"
 #include <memory>
 
-ComputerPlayer::ComputerPlayer(std::unique_ptr<Strategy> strategy) : strategy(std::move(strategy)) {}
+ComputerPlayer::ComputerPlayer(std::unique_ptr<Strategy> strategy, Colour colour) : Player(colour), strategy(std::move(strategy)) {}
 
 bool ComputerPlayer::isValidCommand(const std::string& line) {
     // For computer players, the command should be exactly "move"

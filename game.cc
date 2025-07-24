@@ -207,16 +207,16 @@ void Game::startGame(string line) {
 
     // initialize white player
     if(whitePlayerType == "human") {
-        whitePlayer = make_unique<HumanPlayer>();
+        whitePlayer = make_unique<HumanPlayer>(Colour::White);
     } else if (whitePlayerType == "computer[1]") {
         unique_ptr<Strategy> strategy = make_unique<Level1>();
-        whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+        whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else if (whitePlayerType == "computer[2]") {
         unique_ptr<Strategy> strategy = make_unique<Level2>();
-        whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+        whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else if (whitePlayerType == "computer[3]") {
         unique_ptr<Strategy> strategy = make_unique<Level3>();
-        whitePlayer = make_unique<ComputerPlayer>(move(strategy));
+        whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else if (whitePlayerType == "computer[4]") {
         // add code here for level 4
         cout << "level 4 is not supported yet" << endl;
@@ -228,16 +228,16 @@ void Game::startGame(string line) {
 
     // initialize black player
     if (blackPlayerType == "human") {
-        blackPlayer = make_unique<HumanPlayer>();
+        blackPlayer = make_unique<HumanPlayer>(Colour::Black);
     } else if (blackPlayerType == "computer[1]") {
         unique_ptr<Strategy> strategy = make_unique<Level1>();
-        blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+        blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else if (blackPlayerType == "computer[2]") {
         unique_ptr<Strategy> strategy = make_unique<Level2>();
-        blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+        blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else if (blackPlayerType == "computer[3]") {
         unique_ptr<Strategy> strategy = make_unique<Level3>();
-        blackPlayer = make_unique<ComputerPlayer>(move(strategy));
+        blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else if (blackPlayerType == "computer[4]") {
         // add code here for level 4
         cout << "level 4 is not supported yet" << endl;
