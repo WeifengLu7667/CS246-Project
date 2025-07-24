@@ -19,33 +19,17 @@ Board::Board(std::size_t gridSize):
 	// TextDisplay will be attached by the Game controller
 }
 
-Board::Board(const Board&other):gridSize{other.gridSize}, 
-				board(other.gridSize, Row(other.gridSize)), state{other.state} {
-	for (std::size_t r = 0; r < gridSize; ++r) {
-		for (std::size_t c = 0; c < gridSize; ++c) {
-			if (other.board[r][c]) board[r][c] = other.board[r][c]->clone();
-		}
-	}
-	// TextDisplay will be attached by the Game controller
+Board::Board(const Board& other)
+    : board(other.gridSize), gridSize{other.gridSize}, state{other.state}
+{
+    for (auto& row : board) row.resize(gridSize);
+
+    for (std::size_t r = 0; r < gridSize; ++r)
+        for (std::size_t c = 0; c < gridSize; ++c)
+            if (other.board[r][c])
+                board[r][c] = other.board[r][c]->clone();
 }
 
-
-Board &Board::operator=(const Board&other) {
-	if (this == &other) return *this;
-	gridSize = other.gridSize;
-	state = other.state;
-
-	board.assign(gridSize, Row(gridSize));
-
-	for (std::size_t r = 0; r < gridSize; ++r) {
-		for (std::size_t c = 0; c < gridSize; ++c) {
-			if (other.board[r][c]) board[r][c] = other.board[r][c]->clone();
-			else board[r][c].reset();
-		}
-	}
-	// TextDisplay will be attached by the Game controller
-	return *this;
-}
 
 
 void Board::snapshotBoard() {
@@ -100,13 +84,15 @@ bool Board::movePiece(const Move &m) {
 
 	// 3. Promotion
 	bool colour = (dst->getColour() == Colour::White);
-	if (dst && (dst->getSymbol() == colour ? 'P' : 'p') && m.promo != ' ') {
-		switch (m.promo) {
-            case 'Q': case 'q': dst = std::make_unique<Queen>(colour); break;
-            case 'R': case 'r': dst = std::make_unique<Rook>(colour); break;
-            case 'B': case 'b': dst = std::make_unique<Bishop>(colour); break;
-            case 'N': case 'n': dst = std::make_unique<Knight>(colour); break;
-        }
+
+	if (dst && (dst->getSymbol() == (colour ? 'P' : 'p')) && m.promo != ' ') {
+		switch (std::tolower(m.promo)) {
+        	case 'q': dst = std::make_unique<Queen>(c); break;
+        	case 'r': dst = std::make_unique<Rook>(c); break;
+        	case 'b': dst = std::make_unique<Bishop>(c); break;
+        	case 'n': dst = std::make_unique<Knight>(c); break;
+        	default : break;
+    }
 	}
 
 	// 4. Update enPassantTarget to State
