@@ -309,6 +309,34 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 
 void Board::changeState(State newState) {
 	state = newState;
+	
+	// Clear existing pieces
+	for (auto &row : board) {
+		for (auto &sq : row) {
+			sq.reset();
+		}
+	}
+	
+	// Create piece objects from the character representation
+	for (std::size_t row = 0; row < gridSize; ++row) {
+		for (std::size_t col = 0; col < gridSize; ++col) {
+			char pieceChar = state.board[row][col];
+			if (pieceChar != ' ' && pieceChar != '_') {
+				Colour c = (std::isupper(pieceChar)) ? Colour::White : Colour::Black;
+				
+				switch (std::tolower(pieceChar)) {
+					case 'p': board[row][col] = std::make_unique<Pawn>(c); break;
+					case 'r': board[row][col] = std::make_unique<Rook>(c); break;
+					case 'n': board[row][col] = std::make_unique<Knight>(c); break;
+					case 'b': board[row][col] = std::make_unique<Bishop>(c); break;
+					case 'q': board[row][col] = std::make_unique<Queen>(c); break;
+					case 'k': board[row][col] = std::make_unique<King>(c); break;
+					default: break; // Invalid piece character, leave empty
+				}
+			}
+		}
+	}
+	
 	notifyObservers();
 }
 
