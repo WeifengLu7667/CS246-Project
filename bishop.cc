@@ -30,7 +30,7 @@ std::vector<Posn> Bishop::getValidMoves(const Board& b, Posn p) const {
                 break;
             }
             newRow += dx[i];
-            newCol += dy
+            newCol += dy[i];
         }
     }
     
