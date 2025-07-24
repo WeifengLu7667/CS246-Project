@@ -8,6 +8,9 @@
 
 using namespace std;
 
+class Board;
+
+
 class Piece {
 protected:
     Colour colour;
