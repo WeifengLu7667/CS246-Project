@@ -116,6 +116,7 @@ void Game::setupMode() {
                         // all requirements are met, we can exit setup mode and start the game
                         board.changeState(state);
                         useDefaultBoard = false;
+                        cout << "Setup mode exited. Use the game command to start playing." << endl;
                         return;
                     }    
                 }
