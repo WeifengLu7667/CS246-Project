@@ -183,21 +183,28 @@ void Game::moveCommand(string line) {
         if(board.movePiece(move)) {
             // successful move - display the board
             cout << *textDisplay << endl;
+
             // check if the game is over
             Colour currentColour;
             string message;
             if (currentState.turn == Colour::White) {
                 currentColour = Colour::Black;
-                message = "Black wins!";
+                message = "Black";
             } else {
                 currentColour = Colour::White;
-                message = "White wins!";
+                message = "White";
             }
             if (board.isStaleMate(currentColour)) {
                 cout << "Stalemate!" << endl;
+                scoreboard.addScore(Colour::White, 0.5);
+                scoreboard.addScore(Colour::Black, 0.5);
             } else if (board.isCheckMate(currentColour)) {
-                cout << "Checkmate! " << message << endl;
+                cout << "Checkmate! " << message << " wins!" << endl;
+                scoreboard.addScore(currentState.turn, 1);
+            } else if (board.isCheck(currentColour)) {// if the game is not over, we check if the current player is in check
+                cout << message << " is in check." << endl;
             }
+            
         } else {
             cout << "illegal move" << endl;
         }
@@ -308,5 +315,6 @@ void Game::gameRun() {
         } 
     }
     // Print final score when program ends (Ctrl-D pressed)
+    cout << endl;
     scoreboard.printScore(cout);
 }
