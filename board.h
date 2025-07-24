@@ -24,6 +24,9 @@ class Board: public Subject {
     // Private Methods
     // Mutate State to a new board text display
     void snapshotBoard();
+    
+    // Internal move function without legal move validation (for legalMoves to use)
+    bool movePieceInternal(const Move &m);
 
 public:
     // Big Five

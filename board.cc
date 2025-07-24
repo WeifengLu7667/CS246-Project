@@ -52,7 +52,7 @@ void Board::snapshotBoard() {
     }
 }
 
-bool Board::movePiece(const Move &m) {
+bool Board::movePieceInternal(const Move &m) {
 	// 0. Sanity Check
 	Posn start = m.from;
 	Posn end = m.to;
@@ -66,20 +66,6 @@ bool Board::movePiece(const Move &m) {
 	auto &dst = board[end.row][end.col];
 
 	if (!src) return false;
-	Colour c = src->getColour();
-
-	// 1. Legal Move?
-	std::vector<Move> all = legalMoves(c);
-	bool legal = false;
-
-	for (const Move &lm : all) {
-		if (lm.from == m.from && lm.to == m.to && lm.promo == m.promo) {
-            legal = true;
-            break;
-		}
-	}
-
-	if (!legal) return false;
 
 	// Clear en passant target at the start of every move
 	Posn previousEnPassantTarget = state.enPassantTarget;
@@ -94,9 +80,11 @@ bool Board::movePiece(const Move &m) {
 
 	// 2. Move/ Capture
 	dst = std::move(src);
+	src.reset();
 
 	// 3. Promotion
 	bool isWhite = (dst->getColour() == Colour::White);
+	Colour c = dst->getColour();
 
 	if (dst && (dst->getSymbol() == (isWhite ? 'P' : 'p')) && m.promo != ' ') {
 		switch (std::tolower(m.promo)) {
@@ -105,7 +93,7 @@ bool Board::movePiece(const Move &m) {
         	case 'b': dst = std::make_unique<Bishop>(c); break;
         	case 'n': dst = std::make_unique<Knight>(c); break;
         	default : break;
-    }
+    	}
 	}
 
 	// 4. Update enPassantTarget to State (only for double pawn moves)
@@ -129,6 +117,38 @@ bool Board::movePiece(const Move &m) {
 	snapshotBoard();
 	notifyObservers();
 	return true;
+}
+
+bool Board::movePiece(const Move &m) {
+	// 0. Sanity Check
+	Posn start = m.from;
+	Posn end = m.to;
+
+	if (start.row < 0 || start.row >= static_cast<int>(gridSize) ||
+		start.col < 0 || start.col >= static_cast<int>(gridSize) ||
+		end.row < 0 || end.row >= static_cast<int>(gridSize) ||
+		end.col < 0 || end.col >= static_cast<int>(gridSize)) return false;
+
+	auto &src = board[start.row][start.col];
+
+	if (!src) return false;
+	Colour c = src->getColour();
+
+	// 1. Legal Move? 
+	std::vector<Move> all = legalMoves(c);
+	bool legal = false;
+
+	for (const Move &lm : all) {
+		if (lm.from == m.from && lm.to == m.to && lm.promo == m.promo) {
+            legal = true;
+            break;
+		}
+	}
+
+	if (!legal) return false;
+
+	// Use internal function to perform the actual move
+	return movePieceInternal(m);
 }
 
 Piece* Board::getPieceAt(std::size_t x, std::size_t y) const {
@@ -263,7 +283,7 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 						Move m{start, end, promoPieces[i]};
 						Board copy(*this);
 
-						if (!copy.movePiece(m)) continue;
+						if (!copy.movePieceInternal(m)) continue;
 						if (copy.isCheck(c)) continue;
 
 						legal.push_back(m);
@@ -272,7 +292,7 @@ std::vector<Move> Board::legalMoves(Colour c) const {
 					Move m{start, end, ' '};
 
                     Board copy(*this);
-                    if (!copy.movePiece(m)) continue;
+                    if (!copy.movePieceInternal(m)) continue;
                     if (copy.isCheck(c)) continue;
 
                     legal.push_back(m);
