@@ -65,9 +65,16 @@ GraphicsDisplay::GraphicsDisplay(Board *b, int pixel)
 }
 
 GraphicsDisplay::~GraphicsDisplay() {
+    // Detach from board first to avoid dangling pointer
+    if (board) {
+        board->detach(this);
+    }
+    
     for (int i = 0; i < 6; ++i) {
         if (whitePix[i]) XFreePixmap(dpy, whitePix[i]);
         if (blackPix[i]) XFreePixmap(dpy, blackPix[i]);
+        if (whiteMask[i]) XFreePixmap(dpy, whiteMask[i]);
+        if (blackMask[i]) XFreePixmap(dpy, blackMask[i]);
     }
 
     if (gc) XFreeGC(dpy, gc);
