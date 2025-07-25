@@ -22,6 +22,14 @@ int spriteIndex(char sym) {
 GraphicsDisplay::GraphicsDisplay(Board *b, int pixel) 
     : size(pixel), sq(size / 8), board(b) {
     
+    // Initialize all pixmap arrays to 0
+    for (int i = 0; i < 6; ++i) {
+        whitePix[i] = 0;
+        blackPix[i] = 0;
+        whiteMask[i] = 0;
+        blackMask[i] = 0;
+    }
+    
     // Open connection to X server
     dpy = XOpenDisplay(nullptr);
     if (!dpy) {
@@ -104,6 +112,7 @@ void GraphicsDisplay::loadSprites() {
         } else {
             std::cerr << "Failed to load " << whiteFiles[i] << "\n";
             whitePix[i] = 0;
+            whiteMask[i] = 0;
         }
 
         if (XpmReadFileToPixmap(dpy, win, blackFiles[i].c_str(), &blackPix[i], &blackMask[i], &attr) == XpmSuccess) {
@@ -112,6 +121,7 @@ void GraphicsDisplay::loadSprites() {
         } else {
             std::cerr << "Failed to load " << blackFiles[i] << "\n";
             blackPix[i] = 0;
+            blackMask[i] = 0;
         }
     }
 }
