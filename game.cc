@@ -356,11 +356,10 @@ void Game::gameRun() {
         } else if (line.substr(0, 4) == "game" && !isRunning) {
             startGame(line);
         } else if (line == "help") {
-            cout << "this feature is not currently supported" << endl;
-            // add code for bonus feature
+            cout << "this feature is not currently supported" << endl;            
         } else if (line == "turn on bonus" && !isRunning) {
             bonusMode = true;
-            cout << "bonus mode is on, you can now use the \"undo\" and \"help\"" << endl;
+            cout << "bonus mode is on, you can now use \"undo\"" << endl;
         } else if (line == "turn off bonus" && !isRunning) {
             bonusMode = false;
             cout << "bonus mode is off" << endl;
