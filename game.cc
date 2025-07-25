@@ -17,6 +17,7 @@
 #include "posn.h"
 #include "castlinginfo.h"
 #include "state.h"
+#include "graphicaldisplay.h"
 
 using namespace std;
 
@@ -24,6 +25,10 @@ Game::Game() : useDefaultBoard(true), isRunning(false) {
     // Create TextDisplay and properly attach it to the Board using observer pattern
     textDisplay = std::make_unique<TextDisplay>(&board);
     board.attach(textDisplay.get());
+    
+    // Create GraphicsDisplay and attach it to the Board
+    graphicsDisplay = std::make_unique<GraphicsDisplay>(&board);
+    // Note: GraphicsDisplay attaches itself to the board in its constructor
 }
 
 Posn Game::convertToPosn(const string& posnStr) {// may throw invalid_argument if the position string is invalid

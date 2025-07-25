@@ -11,6 +11,7 @@
 #include "player.h"
 #include "move.h"
 #include "textdisplay.h"
+#include "graphicaldisplay.h"
 #include "state.h"
 #include "posn.h"
 #include "castlinginfo.h"
@@ -25,6 +26,7 @@ private:
     bool isRunning; // true if the game is running, false if the game is over
     bool useDefaultBoard; // false if the user uses setup mode.
     std::unique_ptr<TextDisplay> textDisplay; // Observer for board display
+    std::unique_ptr<GraphicsDisplay> graphicsDisplay; // Observer for graphical display
 
     // Private Methods
     Posn convertToPosn(const std::string& posnStr);
