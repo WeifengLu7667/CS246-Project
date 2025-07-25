@@ -1,0 +1,210 @@
+[33m89cdb4f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m command line changed for level5
+[33md359723[m fixed strategy.cc
+[33m3f91fcc[m changed output for bonus on
+[33m71c29a7[m add random generator to level5
+[33m9b024c1[m small fix
+[33mb76b9a3[m modify makefile
+[33m5078fe1[m minor change
+[33mae4e5c5[m add level5
+[33mb51d8d4[m updates
+[33mc917825[m fix graphicaldisplay.cc
+[33m0d142b8[m fix memory leak in graphicaldisplay.cc
+[33mf501a14[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33mae2902d[m small change in output
+[33ma6d558e[m updates
+[33m6254106[m updates
+[33m3c14094[m delete debug command, add some output for bonus mode
+[33m4ae172c[m fix undo
+[33m46fde74[m updates
+[33md997e29[m repo
+[33m277294e[m debug undo
+[33m7386cd4[m graphicaldisplay
+[33m553e47f[m fix undo
+[33mc4f661d[m Update level4
+[33me42a70f[m add level4 in the makefile
+[33m6cd6b54[m added level4, undo bonus feature, inside game.h.cc
+[33ma747c04[m updates
+[33m78a217f[m updates
+[33m08fcb98[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m3035bc8[m updates
+[33md797303[m make sure all files end with a new line, otherwise marmoset won't compile
+[33mba4e9e3[m graphical display implemented, modifying game.cc.h, graphicaldisplay.h.cc
+[33mcecac81[m updates
+[33m66a505a[m Update level4 comment
+[33m9647b02[m Finish level4.cc
+[33mc43fccd[m fix ending game issues
+[33m8a8007d[m fix win message
+[33m1cd9477[m Add level4
+[33m9129d2d[m delete debug outputs
+[33mca80c1d[m updates
+[33mdc27956[m debug comment for cancanstle
+[33ma57980b[m updates
+[33m8dbf947[m updates
+[33m5a32b35[m updates
+[33m94b181c[m add debug in game.cc
+[33mad3931e[m add debug function on board.h.cc
+[33m25706d1[m updates
+[33m7b4eb9d[m try to fix castling
+[33m3a9ed64[m castling
+[33mc80cc4f[m add a print message after setup mode
+[33m0b83683[m updates
+[33m570bf37[m ctime
+[33m735c6db[m Update
+[33mdee58be[m Add: move Rook after castling
+[33m3194d2c[m add header inside piece.h
+[33m627bb7c[m add restriction about piece colour
+[33mc34afb9[m fix
+[33md0ab3fa[m added score after checkmate and stalemate, add check message
+[33mc819cf8[m added checkmate and stalemate detection
+[33m11f5cc4[m modified changeState
+[33mb01aa84[m add print score after program end
+[33m59e5863[m initialize color for computer player, modified play.h, humanplayer.h, computerplay.h.cc, game.cc
+[33m63ca79f[m change debug msg
+[33m9bec89d[m add newest
+[33m5723fa2[m updates
+[33m3075758[m errors right most pawn
+[33m4c9b4b4[m remove debug comments
+[33mbf58824[m Fix pawn.cc
+[33m9df08f8[m update movePieceInternal
+[33m1c07200[m updates
+[33m61240fd[m debug comment
+[33mbac4552[m Update getpieceat
+[33m32f4367[m change board.cc.h
+[33mabaa0f5[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m61bd103[m edit board.h.cc
+[33m03e3f7e[m updates
+[33ma02075b[m updates
+[33m32228f7[m updates
+[33mcc754d7[m updates
+[33m559d592[m update
+[33m1238e91[m debug and edited game.h.cc
+[33mdd8dd83[m fix piece.h
+[33m59be7ae[m updates
+[33mdf8a1dc[m updates
+[33m29d9f4e[m updates
+[33m3e02e53[m add makefile
+[33m15fb876[m updates
+[33m9970d9e[m updates
+[33m9111005[m small change on game.cc
+[33mce99a12[m update subject.h .cc, textdisplay.cc, game.h.cc, board.h.cc
+[33md70a3f8[m updates
+[33m46b8aa0[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m560ad3f[m update the human, computer, and players, update game.h and game.cc
+[33m6be990e[m Update
+[33mad0aba8[m Update
+[33m7634516[m Add check move to level3.cc
+[33m8d20b40[m updates
+[33m90abbc6[m Add check move to level2.cc
+[33m3bf68b4[m updates
+[33m1787afe[m Update
+[33m1b337f8[m Update
+[33mf1c3969[m Update
+[33m1b8fb2c[m update game.cc
+[33m7437937[m Finish level3.cc
+[33m6ea7d14[m updates
+[33m62600b7[m update game.h, game.cc
+[33m28011e5[m Update level 1-3 comment
+[33md00f608[m Update level 1-3 strategy
+[33mb173ba9[m writing game.cc
+[33m9b76f9d[m updates
+[33m60199b2[m updates
+[33m964b56e[m Finish level2.cc
+[33m684319d[m Add comment on levels of strategy
+[33m484660f[m Add level2, level3
+[33m861aac3[m Finish level1.cc
+[33mb40bef0[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m7745520[m writing game
+[33m0c15e68[m updates
+[33mb7a1cd2[m Update player&strategy fields and logic
+[33m80fbb94[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33m202dfd5[m writing game.cc, comment move.h
+[33m5cc4aa1[m Update
+[33m87beeed[m Add humanplayer.cc
+[33mc40ca9f[m Modify player.h
+[33m51012ce[m Modify player.h
+[33m293d565[m Finish player.cc
+[33mc808325[m updates
+[33m5c78c7b[m Add scoreboard.cc
+[33m5ab86ee[m Add scoreboad to game field
+[33ma393bfa[m writing game.cc
+[33m00f0ac8[m Update
+[33md969672[m updates
+[33m479e2e3[m edit state.h, writing game.cc
+[33m292ab94[m add comment in state.h, writing game.cc
+[33m3c9f4cd[m updates
+[33m68931af[m writing game.cc
+[33m4546a76[m updates
+[33m0c66a1d[m Add en passant move in pawn.cc
+[33m026a0be[m add commment in state.h, add something in game.cc
+[33mafcbd63[m change comments in board.h
+[33mf023786[m small changes in game.cc, board.h
+[33mcaaca9c[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33meb20dfc[m Modify piece.h
+[33medc8c0b[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33mb0bd7c5[m updates
+[33m3fc4cae[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33mc2c226e[m updates
+[33m22b73d6[m updates
+[33m1aef752[m modified game and main
+[33m363b2a4[m Update pieces impl
+[33ma931977[m Finish pawn.cc
+[33m768f13c[m updates
+[33m1779b55[m small changes
+[33mad3c42b[m Modify pawn.cc
+[33m64fe22e[m modified pointers
+[33m7ee3899[m Restore raw ptr usage
+[33m81198fb[m Add pawn.cc
+[33m28b0403[m Fix getPieceAt unique ptr usage
+[33mc09d160[m updates
+[33m0dc0223[m Fix getPieceAt usage
+[33mb219b43[m Finish king.cc, fix knight.cc
+[33m9740c82[m changed raw pointer to smart
+[33mf960816[m added game.h, modified computerplayer
+[33m3c9b5ee[m Optimize bishop.cc and rook.cc
+[33mb33fe24[m Finish queen.cc
+[33m688e76a[m updates
+[33m4656dd8[m change comment
+[33mabd30b6[m Fixed knight.cc, add queen.cc
+[33mad408fa[m updates
+[33m1f50129[m added move.h
+[33m38e3ba4[m added strategies, fixed players' functions
+[33m006649f[m Finish rook.cc
+[33m2d60f06[m Finish bishop.cc
+[33m55b1c0a[m small changes in scoreboard
+[33m0c7b4a7[m add computer and human players, made some changes in player.h
+[33mdaa246d[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33mbb59cb5[m updates
+[33m918eb49[m Modify bishop.cc
+[33me564115[m Add bishop.cc
+[33m04ce593[m add player.h
+[33m1559cf3[m change indentation
+[33m87cc9df[m Finish knight.cc
+[33m1484673[m updates
+[33me5fdc3f[m Add knight.cc
+[33maa8ecff[m Merge branch 'main' of github.com:WeifengLu7667/CS246-Project
+[33mcbbd614[m added scoreboard.h
+[33m7a99a58[m updates
+[33m751a683[m Add piece.cc
+[33m9a2f85a[m add virtual destructor
+[33m937b01b[m Add remaining pieces
+[33m4bbed96[m Add king.h
+[33mf1b4d9d[m updates
+[33md97d236[m Add knight.h
+[33m4761d3e[m Complete peice.h
+[33m0ed94a3[m Modify piece.h
+[33maf2bfb0[m updates
+[33md6b13f8[m Add colour.h
+[33m7d1ddf9[m Modify piece.h
+[33md0e2c98[m Add posn.h
+[33m9c85f77[m Modiify piece.h
+[33m782a0d7[m updates
+[33m3a10f64[m Add piece.h
+[33m21b4bbb[m Add piece file
+[33md4be7d3[m updates
+[33mcfee9f4[m test
+[33me67742d[m Add newline
+[33m374c07b[m test
+[33m71f53c5[m Add main.cc
+[33m4aec86e[m Add main.cc
+[33m09da846[m Delete CS246-Project
+[33mb53f13f[m Initial commit

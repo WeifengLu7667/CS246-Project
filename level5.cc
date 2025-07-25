@@ -11,9 +11,7 @@
 using namespace std;
 
 Level5::Level5() {
-    cout << "enter the depth of the search tree (2 is fast, 3 is slow, 4 is very slow): ";
-    cin >> depth;
-    cout << "depth: " << depth << endl;    
+    depth = 2;
 }
 
 // Piece value evaluation
