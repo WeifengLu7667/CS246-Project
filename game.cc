@@ -366,7 +366,7 @@ void Game::gameRun() {
             cout << "this feature is not currently supported" << endl;            
         } else if (line == "turn on bonus" && !isRunning) {
             bonusMode = true;
-            cout << "bonus mode is on, you can now use \"undo\"" << endl;
+            cout << "bonus mode is on, you can now use \"undo\" and level 5 AI" << endl;
         } else if (line == "turn off bonus" && !isRunning) {
             bonusMode = false;
             cout << "bonus mode is off" << endl;
