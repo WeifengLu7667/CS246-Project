@@ -18,6 +18,7 @@
 #include "castlinginfo.h"
 #include "state.h"
 #include "graphicaldisplay.h"
+#include "level4.h"
 
 using namespace std;
 
@@ -29,6 +30,8 @@ Game::Game() : useDefaultBoard(true), isRunning(false) {
     // Create GraphicsDisplay and attach it to the Board
     graphicsDisplay = std::make_unique<GraphicsDisplay>(&board);
     // Note: GraphicsDisplay attaches itself to the board in its constructor
+
+    bonusMode = false; // bonus mode is off by default
 }
 
 Posn Game::convertToPosn(const string& posnStr) {// may throw invalid_argument if the position string is invalid
@@ -260,9 +263,8 @@ void Game::startGame(string line) {
         unique_ptr<Strategy> strategy = make_unique<Level3>();
         whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else if (whitePlayerType == "computer[4]") {
-        // add code here for level 4
-        cout << "level 4 is not supported yet" << endl;
-        validPlayers = false;
+        unique_ptr<Strategy> strategy = make_unique<Level4>();
+        whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else {
         cout << "invalid player type" << endl;
         validPlayers = false;
@@ -281,9 +283,8 @@ void Game::startGame(string line) {
         unique_ptr<Strategy> strategy = make_unique<Level3>();
         blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else if (blackPlayerType == "computer[4]") {
-        // add code here for level 4
-        cout << "level 4 is not supported yet" << endl;
-        validPlayers = false;
+        unique_ptr<Strategy> strategy = make_unique<Level4>();
+        blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else {
         cout << "invalid player type" << endl;
         validPlayers = false;
@@ -296,6 +297,12 @@ void Game::startGame(string line) {
         isRunning = true;
         // Display the initial board
         cout << *textDisplay << endl;
+
+        // if bonus mode is on, need to keep track of the history
+        if (bonusMode) {
+            history = {}; // clear the history
+            history.push(board.getGameState()); // push the initial state
+        }
 
         // check if it's stalemate
         if (board.isStaleMate(board.getGameState().turn)) {
@@ -326,7 +333,18 @@ void Game::gameRun() {
         } else if (line.substr(0, 4) == "move" && !isRunning) {
             cout << "can't move, because game is not running" << endl;
         } else if (line.substr(0, 4) == "undo" && isRunning) {
-            // add code here
+            if (bonusMode) {
+                if (history.empty()) {
+                    cout << "can't undo, because no moves have been made" << endl;
+                } else {
+                    history.pop();
+                    board.changeState(history.top());
+                    cout << *textDisplay << endl;
+                }
+            } else {
+                cout << "can't undo, because bonus mode is off" << endl;
+            }      
+                
         } else if (line.substr(0, 4) == "undo" && !isRunning) {
             cout << "can't undo, because game is not running" << endl;
         } else if (line.substr(0, 4) == "game" && isRunning) {
@@ -336,6 +354,14 @@ void Game::gameRun() {
         } else if (line.substr(0, 4) == "help") {
             cout << "this feature is not currently supported" << endl;
             // add code for bonus feature
+        } else if (line.substr(0, 4) == "turn on bonus" && !isRunning) {
+            bonusMode = true;
+        } else if (line.substr(0, 4) == "turn off bonus" && !isRunning) {
+            bonusMode = false;
+        } else if (line.substr(0, 4) == "turn on bonus" && isRunning) {
+            cout << "can't turn on bonus mode in the middle of a game" << endl;
+        } else if (line.substr(0, 4) == "turn off bonus" && isRunning) {
+            cout << "can't turn off bonus mode in the middle of a game" << endl;
         } else {
             cout << "invalid command" << endl;
         } 

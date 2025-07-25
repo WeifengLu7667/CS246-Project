@@ -22,11 +22,12 @@ private:
     Scoreboard scoreboard;
     std::unique_ptr<Player> whitePlayer;
     std::unique_ptr<Player> blackPlayer;
-    std::stack<State> History;
+    std::stack<State> history;
     bool isRunning; // true if the game is running, false if the game is over
     bool useDefaultBoard; // false if the user uses setup mode.
     std::unique_ptr<TextDisplay> textDisplay; // Observer for board display
     std::unique_ptr<GraphicsDisplay> graphicsDisplay; // Observer for graphical display
+    bool bonusMode; // true if the game is in bonus mode, false if the game is in normal mode
 
     // Private Methods
     Posn convertToPosn(const std::string& posnStr);
