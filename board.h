@@ -40,12 +40,6 @@ public:
 
     Board(const Board&other);
 
-    Board(Board&&other) = default;
-
-    Board &operator=(const Board&other);
-
-    Board &operator=(Board &&other) = default;
-
     ~Board() = default;
 
     // Public methods
@@ -80,9 +74,6 @@ public:
     void changeState(State newState);
 
     void removePiece(Posn p);
-
-    // Debug function to help identify castling issues
-    void debugCastling(Colour c) const;
 };
 
 #endif
