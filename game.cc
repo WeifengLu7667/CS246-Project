@@ -341,13 +341,9 @@ void Game::gameRun() {
                 if (history.size() <= 1) {
                     cout << "can't undo, because no moves have been made" << endl;
                 } else {
-                    cout << "debug1" << endl;
                     history.pop();
-                    cout << "debug2" << endl;
                     board.changeState(history.top());
-                    cout << "debug3" << endl;
                     cout << *textDisplay << endl;
-                    cout << "debug4" << endl;
                 }
             } else {
                 cout << "can't undo, because bonus mode is off" << endl;
@@ -364,8 +360,10 @@ void Game::gameRun() {
             // add code for bonus feature
         } else if (line == "turn on bonus" && !isRunning) {
             bonusMode = true;
+            cout << "bonus mode is on, you can now use the \"undo\" and \"help\"" << endl;
         } else if (line == "turn off bonus" && !isRunning) {
             bonusMode = false;
+            cout << "bonus mode is off" << endl;
         } else if (line == "turn on bonus" && isRunning) {
             cout << "can't turn on bonus mode in the middle of a game" << endl;
         } else if (line == "turn off bonus" && isRunning) {
