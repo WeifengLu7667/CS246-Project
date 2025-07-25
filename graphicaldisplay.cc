@@ -78,13 +78,13 @@ GraphicsDisplay::~GraphicsDisplay() {
 
 void GraphicsDisplay::loadSprites() {
     std::string whiteFiles[6] = {
-        "sprites/white_king.xpm", "sprites/white_queen.xpm", "sprites/white_bishop.xpm",
-        "sprites/white_knight.xpm", "sprites/white_rook.xpm", "sprites/white_pawn.xpm"
+        "sprites/wK.xpm", "sprites/wQ.xpm", "sprites/wB.xpm",
+        "sprites/wN.xpm", "sprites/wR.xpm", "sprites/wP.xpm"
     };
 
     std::string blackFiles[6] = {
-        "sprites/black_king.xpm", "sprites/black_queen.xpm", "sprites/black_bishop.xpm",
-        "sprites/black_knight.xpm", "sprites/black_rook.xpm", "sprites/black_pawn.xpm"
+        "sprites/bK.xpm", "sprites/bQ.xpm", "sprites/bB.xpm",
+        "sprites/bN.xpm", "sprites/bR.xpm", "sprites/bP.xpm"
     };
 
     for (int i = 0; i < 6; ++i) {
@@ -137,12 +137,14 @@ void GraphicsDisplay::drawSprite(int r, int c, char sym) {
     int index = spriteIndex(sym);
     if (index < 0) return;
 
-    int x = c * sq;
-    int y = r * sq;
+    // Center the sprite in the square
+    int x = c * sq + (sq - 64) / 2;
+    int y = r * sq + (sq - 64) / 2;
+
     Pixmap sprite = isupper(sym) ? whitePix[index] : blackPix[index];
 
     if (sprite)
-        XCopyArea(dpy, sprite, win, gc, 0, 0, spriteW, spriteH, x, y);
+        XCopyArea(dpy, sprite, win, gc, 0, 0, 64, 64, x, y);
     else
         drawGlyph(r, c, sym);  // fallback to text
 }
@@ -202,7 +204,7 @@ void GraphicsDisplay::notify() {
             const Piece* piece = board->getPieceAt(r, c);
             if (piece) {
                 char symbol = piece->getSymbol();
-                drawGlyph(r, c, symbol);
+                drawSprite(r, c, symbol);
             }
         }
     }
