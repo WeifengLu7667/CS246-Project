@@ -17,9 +17,13 @@ class GraphicsDisplay : public Observer {
 
     void drawSquare(int r,int c,bool dark);
     void drawGlyph (int r,int c,char sym); // letters/overlays
-    // (OPTIONAL) sprite support ------------------
     // Pixmap whitePix[6], blackPix[6]; int spriteW,spriteH;
-    // void loadSprites(); void drawSprite(int r,int c,char sym);
+    void drawSprite(int r,int c,char sym);
+    void loadSprites(); 
+
+    Pixmap whitePix[6], blackPix[6]; // KQBNRP = 0–5
+    Pixmap whiteMask[6], blackMask[6];
+    int spriteW{0}, spriteH{0};
 
 public:
     explicit GraphicsDisplay(Board *b,int pixel=560);

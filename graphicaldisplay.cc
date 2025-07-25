@@ -2,8 +2,22 @@
 #include "board.h"
 #include "piece.h"
 #include <X11/Xutil.h>
+#include <X11/xpm.h>
 #include <iostream>
 #include <string>
+
+int spriteIndex(char sym) {
+    switch (tolower(sym)) {
+        case 'k': return 0;
+        case 'q': return 1;
+        case 'b': return 2;
+        case 'n': return 3;
+        case 'r': return 4;
+        case 'p': return 5;
+        default:  return -1;
+    }
+}
+
 
 GraphicsDisplay::GraphicsDisplay(Board *b, int pixel) 
     : size(pixel), sq(size / 8), board(b) {
@@ -42,22 +56,59 @@ GraphicsDisplay::GraphicsDisplay(Board *b, int pixel)
     
     // Wait for window to be mapped
     XEvent e;
-    do {
-        XNextEvent(dpy, &e);
-    } while (e.type != Expose);
+    do { XNextEvent(dpy, &e);} while (e.type != Expose);
     
     // Attach to board and draw initial state
+    loadSprites();
     board->attach(this);
     notify();
 }
 
 GraphicsDisplay::~GraphicsDisplay() {
-    if (dpy) {
-        if (gc) XFreeGC(dpy, gc);
-        if (win) XDestroyWindow(dpy, win);
-        XCloseDisplay(dpy);
+    for (int i = 0; i < 6; ++i) {
+        if (whitePix[i]) XFreePixmap(dpy, whitePix[i]);
+        if (blackPix[i]) XFreePixmap(dpy, blackPix[i]);
+    }
+
+    if (gc) XFreeGC(dpy, gc);
+    if (win) XDestroyWindow(dpy, win);
+    if (dpy) XCloseDisplay(dpy);
+}
+
+
+void GraphicsDisplay::loadSprites() {
+    std::string whiteFiles[6] = {
+        "sprites/white_king.xpm", "sprites/white_queen.xpm", "sprites/white_bishop.xpm",
+        "sprites/white_knight.xpm", "sprites/white_rook.xpm", "sprites/white_pawn.xpm"
+    };
+
+    std::string blackFiles[6] = {
+        "sprites/black_king.xpm", "sprites/black_queen.xpm", "sprites/black_bishop.xpm",
+        "sprites/black_knight.xpm", "sprites/black_rook.xpm", "sprites/black_pawn.xpm"
+    };
+
+    for (int i = 0; i < 6; ++i) {
+        XpmAttributes attr;
+        attr.valuemask = XpmReturnPixels | XpmSize;
+
+        if (XpmReadFileToPixmap(dpy, win, whiteFiles[i].c_str(), &whitePix[i], &whiteMask[i], &attr) == XpmSuccess) {
+            spriteW = attr.width;
+            spriteH = attr.height;
+        } else {
+            std::cerr << "Failed to load " << whiteFiles[i] << "\n";
+            whitePix[i] = 0;
+        }
+
+        if (XpmReadFileToPixmap(dpy, win, blackFiles[i].c_str(), &blackPix[i], &blackMask[i], &attr) == XpmSuccess) {
+            spriteW = attr.width;
+            spriteH = attr.height;
+        } else {
+            std::cerr << "Failed to load " << blackFiles[i] << "\n";
+            blackPix[i] = 0;
+        }
     }
 }
+
 
 void GraphicsDisplay::drawSquare(int r, int c, bool dark) {
     if (!dpy) return;
@@ -79,6 +130,21 @@ void GraphicsDisplay::drawSquare(int r, int c, bool dark) {
     // Draw border
     XSetForeground(dpy, gc, BlackPixel(dpy, screen));
     XDrawRectangle(dpy, win, gc, x, y, sq, sq);
+}
+
+void GraphicsDisplay::drawSprite(int r, int c, char sym) {
+    if (sym == ' ' || sym == '_') return;
+    int index = spriteIndex(sym);
+    if (index < 0) return;
+
+    int x = c * sq;
+    int y = r * sq;
+    Pixmap sprite = isupper(sym) ? whitePix[index] : blackPix[index];
+
+    if (sprite)
+        XCopyArea(dpy, sprite, win, gc, 0, 0, spriteW, spriteH, x, y);
+    else
+        drawGlyph(r, c, sym);  // fallback to text
 }
 
 void GraphicsDisplay::drawGlyph(int r, int c, char sym) {
