@@ -11,7 +11,7 @@
 using namespace std;
 
 Level5::Level5() {
-    cout << "enter the depth of the search tree: ";
+    cout << "enter the depth of the search tree (2 is fast, 3 is slow, 4 is very slow): ";
     cin >> depth;
     cout << "depth: " << depth << endl;    
 }
@@ -125,7 +125,14 @@ Move Level5::chooseMove(Board &board, Colour colour) {
         return Move{{0, 0}, {0, 0}, ' '};
     }
     
-    Move bestMove = allMoves[0];
+    // Initialize random generator (same pattern as Level4)
+    static bool seeded = false;
+    if (!seeded) {
+        std::srand(std::time(nullptr));
+        seeded = true;
+    }
+    
+    std::vector<Move> bestMoves;
     int bestScore = numeric_limits<int>::min();
     
     for (const Move& move : allMoves) {
@@ -136,12 +143,16 @@ Move Level5::chooseMove(Board &board, Colour colour) {
             
             if (score > bestScore) {
                 bestScore = score;
-                bestMove = move;
+                bestMoves.clear();  // Clear previous best moves
+                bestMoves.push_back(move);
+            } else if (score == bestScore) {
+                bestMoves.push_back(move);  // Add to list of equally good moves
             }
         }
     }
     
-    return bestMove;
+    // Randomly select from the best moves
+    return bestMoves[std::rand() % bestMoves.size()];
 }
 
 
