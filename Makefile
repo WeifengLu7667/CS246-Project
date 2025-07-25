@@ -1,7 +1,7 @@
 # ---------- compiler & flags -----------------------------------------
 CXX      = g++
 CXXFLAGS = -std=c++20 -Wall -g -I/opt/X11/include       # add -I paths here if needed
-LIBS     = -L/opt/X11/lib -lX11                        # -lXpm if you load XPM sprites (uncomment)
+LIBS     = -L/opt/X11/lib -lX11 -lXpm                      # -lXpm if you load XPM sprites (uncomment)
 
 # ---------- source files ---------------------------------------------
 SOURCES = \
