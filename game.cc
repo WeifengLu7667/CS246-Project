@@ -228,6 +228,9 @@ void Game::moveCommand(string line) {
             } else if (board.isCheck(currentColour)) {// if the game is not over, we check if the current player is in check
                 cout << message << " is in check." << endl;
             }
+            if (bonusMode) {
+                history.push(board.getGameState());
+            }
 
         } else {
             cout << "illegal move" << endl;
