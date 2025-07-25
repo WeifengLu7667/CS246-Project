@@ -3,6 +3,7 @@
 #include "board.h"
 #include <random>
 #include <ctime>
+#include <cstdlib>
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -11,7 +12,7 @@
 using namespace std;
 
 Level5::Level5() {
-    depth = 2;
+    // No member variables to initialize
 }
 
 // Piece value evaluation
@@ -116,6 +117,8 @@ int minimax(Board board, int depth, bool isMaximizing, Colour colour, int alpha,
 }
 
 Move Level5::chooseMove(Board &board, Colour colour) {
+    const int SEARCH_DEPTH = 2;  // Constant instead of member variable
+    
     std::vector<Move> allMoves = board.legalMoves(colour);
     
     if (allMoves.empty()) {
@@ -136,7 +139,7 @@ Move Level5::chooseMove(Board &board, Colour colour) {
     for (const Move& move : allMoves) {
         Board newBoard = board;  // Copy constructor
         if (newBoard.movePiece(move)) {
-            int score = minimax(newBoard, depth - 1, false, colour, 
+            int score = minimax(newBoard, SEARCH_DEPTH - 1, false, colour, 
                               numeric_limits<int>::min(), numeric_limits<int>::max());
             
             if (score > bestScore) {
