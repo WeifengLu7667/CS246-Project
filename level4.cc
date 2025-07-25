@@ -19,7 +19,7 @@ int getPieceValue(char symbol) {
     }
 }
 
-bool isInVector(const std::vector<Posn>& list, const Posn& p) {
+bool isIn_Vector(const std::vector<Posn>& list, const Posn& p) {
     for (const Posn& q : list) {
         if (q.row == p.row && q.col == p.col) {
             return true;
@@ -85,14 +85,14 @@ Move Level4::chooseMove(Board& board, Colour colour) {
     std::vector<Move> opponentMoves = board.legalMoves(opponent);
     std::vector<Posn> threatenedSquares;
     for (const Move& mv : opponentMoves) {
-        if (!isInVector(threatenedSquares, mv.to)) {
+        if (!isIn_Vector(threatenedSquares, mv.to)) {
             threatenedSquares.push_back(mv.to);
         }
     }
 
     for (const Move& mv : allMoves) {
-        if (isInVector(threatenedSquares, mv.from) &&
-            !isInVector(threatenedSquares, mv.to)) {
+        if (isIn_Vector(threatenedSquares, mv.from) &&
+            !isIn_Vector(threatenedSquares, mv.to)) {
             retreatMoves.push_back(mv);
         }
     }
