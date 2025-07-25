@@ -19,6 +19,7 @@
 #include "state.h"
 #include "graphicaldisplay.h"
 #include "level4.h"
+#include "level5.h"
 
 using namespace std;
 
@@ -269,6 +270,9 @@ void Game::startGame(string line) {
     } else if (whitePlayerType == "computer[4]") {
         unique_ptr<Strategy> strategy = make_unique<Level4>();
         whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
+    } else if (whitePlayerType == "computer[5]") {
+        unique_ptr<Strategy> strategy = make_unique<Level5>();
+        whitePlayer = make_unique<ComputerPlayer>(move(strategy), Colour::White);
     } else {
         cout << "invalid player type" << endl;
         validPlayers = false;
@@ -288,6 +292,9 @@ void Game::startGame(string line) {
         blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else if (blackPlayerType == "computer[4]") {
         unique_ptr<Strategy> strategy = make_unique<Level4>();
+        blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
+    } else if (blackPlayerType == "computer[5]") {
+        unique_ptr<Strategy> strategy = make_unique<Level5>();
         blackPlayer = make_unique<ComputerPlayer>(move(strategy), Colour::Black);
     } else {
         cout << "invalid player type" << endl;
