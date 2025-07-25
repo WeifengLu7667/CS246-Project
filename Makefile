@@ -10,7 +10,7 @@ SOURCES = \
     player.cc humanplayer.cc computerplayer.cc \
     piece.cc king.cc queen.cc rook.cc bishop.cc knight.cc pawn.cc \
     textdisplay.cc graphicaldisplay.cc \
-    level1.cc level2.cc level3.cc level4.cc
+    level1.cc level2.cc level3.cc level4.cc level5.cc
 
 OBJS   = ${SOURCES:.cc=.o}
 TARGET = chess
