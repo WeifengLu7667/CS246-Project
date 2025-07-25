@@ -17,7 +17,7 @@ Level5::Level5() {
 }
 
 // Piece value evaluation
-int getPieceValue(char symbol) {
+int getPieceValueLevel5(char symbol) {
     switch (symbol) {
         case 'Q': case 'q': return 9;
         case 'R': case 'r': return 5;
@@ -50,7 +50,7 @@ int evaluateBoard(const Board& board, Colour colour) {
         for (int col = 0; col < 8; ++col) {
             Piece* piece = board.getPieceAt(row, col);
             if (piece) {
-                int value = getPieceValue(piece->getSymbol());
+                int value = getPieceValueLevel5(piece->getSymbol());
                 if (piece->getColour() == colour) {
                     score += value;
                 } else {
