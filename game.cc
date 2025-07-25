@@ -332,7 +332,7 @@ void Game::gameRun() {
             moveCommand(line);
         } else if (line.substr(0, 4) == "move" && !isRunning) {
             cout << "can't move, because game is not running" << endl;
-        } else if (line.substr(0, 4) == "undo" && isRunning) {
+        } else if (line == "undo" && isRunning) {
             if (bonusMode) {
                 if (history.empty()) {
                     cout << "can't undo, because no moves have been made" << endl;
@@ -351,16 +351,16 @@ void Game::gameRun() {
             cout << "can't start a new game, because currentgame is running" << endl;
         } else if (line.substr(0, 4) == "game" && !isRunning) {
             startGame(line);
-        } else if (line.substr(0, 4) == "help") {
+        } else if (line == "help") {
             cout << "this feature is not currently supported" << endl;
             // add code for bonus feature
-        } else if (line.substr(0, 4) == "turn on bonus" && !isRunning) {
+        } else if (line == "turn on bonus" && !isRunning) {
             bonusMode = true;
-        } else if (line.substr(0, 4) == "turn off bonus" && !isRunning) {
+        } else if (line == "turn off bonus" && !isRunning) {
             bonusMode = false;
-        } else if (line.substr(0, 4) == "turn on bonus" && isRunning) {
+        } else if (line == "turn on bonus" && isRunning) {
             cout << "can't turn on bonus mode in the middle of a game" << endl;
-        } else if (line.substr(0, 4) == "turn off bonus" && isRunning) {
+        } else if (line == "turn off bonus" && isRunning) {
             cout << "can't turn off bonus mode in the middle of a game" << endl;
         } else {
             cout << "invalid command" << endl;
