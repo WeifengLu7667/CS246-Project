@@ -32,6 +32,7 @@ Game::Game() : useDefaultBoard(true), isRunning(false) {
     // Note: GraphicsDisplay attaches itself to the board in its constructor
 
     bonusMode = false; // bonus mode is off by default
+    history = {}; // clear the history
 }
 
 Posn Game::convertToPosn(const string& posnStr) {// may throw invalid_argument if the position string is invalid
@@ -334,12 +335,16 @@ void Game::gameRun() {
             cout << "can't move, because game is not running" << endl;
         } else if (line == "undo" && isRunning) {
             if (bonusMode) {
-                if (history.empty()) {
+                if (history.size() <= 1) {
                     cout << "can't undo, because no moves have been made" << endl;
                 } else {
+                    cout << "debug1" << endl;
                     history.pop();
+                    cout << "debug2" << endl;
                     board.changeState(history.top());
+                    cout << "debug3" << endl;
                     cout << *textDisplay << endl;
+                    cout << "debug4" << endl;
                 }
             } else {
                 cout << "can't undo, because bonus mode is off" << endl;
